@@ -32,24 +32,24 @@ export default async function Navbar() {
     <div className="bg-white">
       <div className="navbar max-w-7xl flex flex-col sm:flex-row gap-2">
         <div className="flex-1">
-          <Link href="/">
+          <Link href="/" className=" text-xl normal-case">
             <Image
               src={"/images/logo.png"}
               width={100}
               height={100}
               alt="Logo"
-              className="hover:scale-95 duration-500"
+              className="hover:scale-105 duration-500"
             />
           </Link>
         </div>
         <div className="flex-none gap-2">
           <form action={searchProducts}>
-            <div className="">
+            <div className="form-control">
               <input
                 type="text"
                 name="searchQuery"
                 placeholder="Search"
-                className="w-full min-w-[100px] "
+                className="input input-borderedw-full min-w-[100px] bg-slate-200"
               />
             </div>
           </form>

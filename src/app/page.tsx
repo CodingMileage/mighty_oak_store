@@ -3,17 +3,27 @@ import { prisma } from "@/lib/db/prisma";
 import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@mui/material";
-import { NewestSparkle, SparklesTextDemo } from "@/components/Nyxb/Sparkle";
+import {
+  NewestSparkle,
+  SoonSparkle,
+  SparklesTextDemo,
+} from "@/components/Nyxb/Sparkle";
 import Slider from "@/components/Slider";
 import { BabyCarousel } from "@/components/BabySlider";
 import { Button } from "@/components/ui/button";
 
 export default async function Home() {
   const products = await prisma.product.findMany({
+    where: { comingSoon: false },
     orderBy: { id: "desc" },
   });
   const newProducts = await prisma.product.findMany({
+    where: { comingSoon: false },
     orderBy: { createdAt: "desc" },
+  });
+  const soonProducts = await prisma.product.findMany({
+    where: { comingSoon: true },
+    orderBy: { createdAt: "desc" }, // Or any other field you want to order by
   });
   return (
     <>
@@ -65,6 +75,7 @@ export default async function Home() {
           ))}
         </div>
       </Container>
+
       <div className="bg-emerald-400 rounded">
         <Container maxWidth="md" className="p-4">
           <NewestSparkle />
@@ -75,6 +86,15 @@ export default async function Home() {
           </div>
         </Container>
       </div>
+
+      <Container maxWidth="md" className="p-4">
+        <SoonSparkle />
+        <div className="my-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {soonProducts.map((product) => (
+            <ProductCard product={product} key={product.id} />
+          ))}
+        </div>
+      </Container>
     </>
   );
 }

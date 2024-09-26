@@ -37,13 +37,15 @@ export default function CartEntry({
   return (
     <div>
       <div className="flex flex-wrap items-center gap-3">
-        <Image
-          src={product.imageUrl}
-          width={200}
-          height={200}
-          alt={product.name}
-          className="rounded-lg"
-        />
+        <Link href={"/products/" + product.id} className="font-bold">
+          <Image
+            src={product.imageUrl}
+            width={200}
+            height={200}
+            alt={product.name}
+            className="rounded-lg"
+          />
+        </Link>
         <div>
           <Link href={"/products/" + product.id} className="font-bold">
             {product.name}
@@ -52,7 +54,7 @@ export default function CartEntry({
           <div className="my-1 flex items-center gap-2">
             Quantity:
             <select
-              className=""
+              className="select w-full max-w-xs select-bordered bg-white"
               name=""
               id=""
               defaultValue={quantity}

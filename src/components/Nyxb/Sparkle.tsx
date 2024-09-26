@@ -7,3 +7,7 @@ export async function SparklesTextDemo() {
 export async function NewestSparkle() {
   return <SparklesText text="New Arrivals" />;
 }
+
+export async function SoonSparkle() {
+  return <SparklesText text="Coming Soon" />;
+}

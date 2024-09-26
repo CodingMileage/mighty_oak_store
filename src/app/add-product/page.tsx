@@ -45,6 +45,7 @@ async function addProduct(formData: FormData) {
   const price = Number(formData.get("price") || 0);
   const quantity = Number(formData.get("quantity") || 0);
   const imageFile = formData.get("imageUrl") as File;
+  const comingSoon = formData.get("comingSoon") === "true"; // Convert to boolean
 
   if (!name || !description || !imageFile || !price) {
     throw new Error("Missing requirements");
@@ -54,7 +55,7 @@ async function addProduct(formData: FormData) {
   const imageUrl = await uploadImage(imageFile);
 
   await prisma.product.create({
-    data: { name, description, imageUrl, price, quantity },
+    data: { name, description, imageUrl, price, quantity, comingSoon },
   });
 
   redirect("/");
@@ -70,35 +71,63 @@ export default function AddProductPage() {
           name="name"
           placeholder="Name"
           type="text"
-          className="mb-3 w-full input input-bordered"
+          className="mb-3 bg-white w-full input input-bordered"
         />
         <textarea
           required
           name="description"
           placeholder="Description"
-          className="textarea textarea-bordered mb-3 w-full"
+          className="bg-white textarea textarea-bordered mb-3 w-full"
         ></textarea>
         <input
           required
           name="price"
           placeholder="Price"
           type="number"
-          className="mb-3 w-full input input-bordered"
+          className="bg-white mb-3 w-full input input-bordered"
         />
         <input
           required
           name="quantity"
           placeholder="Quantity"
           type="number"
-          className="mb-3 w-full input input-bordered"
+          className="bg-white mb-3 w-full input input-bordered"
         />
         <input
           required
           name="imageUrl"
           placeholder="Image URL"
           type="file"
-          className="mb-3 w-full"
+          className="bg-white mb-3 w-full"
         />
+        <div className="mb-3">
+          <label className="block font-semibold mb-2">
+            Is this product coming soon?
+          </label>
+          <div>
+            <input
+              type="radio"
+              id="comingSoonTrue"
+              name="comingSoon"
+              value="true"
+              className="mr-2"
+              required
+            />
+            <label htmlFor="comingSoonTrue" className="mr-5">
+              Yes
+            </label>
+
+            <input
+              type="radio"
+              id="comingSoonFalse"
+              name="comingSoon"
+              value="false"
+              className="mr-2"
+              required
+            />
+            <label htmlFor="comingSoonFalse">No</label>
+          </div>
+        </div>
         <FormSubmitButton className="btn-block">Add Product</FormSubmitButton>
       </form>
     </div>
