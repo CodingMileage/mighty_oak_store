@@ -12,7 +12,7 @@ import {
 } from "./ui/card";
 import Button from "@mui/material/Button";
 import { Container } from "@mui/material";
-import { formatCurrency } from "@/lib/format";
+import { formatCurrency, formatPrice } from "@/lib/format";
 
 interface ProductCardProps {
   product: Product;
@@ -138,7 +138,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               {product.name}
             </CardTitle>
             <CardDescription className="text-center text-gray-600">
-              {formatCurrency(product.price / 100)}
+              {formatPrice(product.price)}
             </CardDescription>
           </CardHeader>
 

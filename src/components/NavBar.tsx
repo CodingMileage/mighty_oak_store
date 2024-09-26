@@ -1,15 +1,61 @@
+import { getCart } from "@/lib/db/cart";
 import Image from "next/image";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import ShoppingCartButton from "./ShoppingCartButton";
 
-export default function Navbar() {
+async function searchProducts(formData: FormData) {
+  "use server";
+
+  const searchQuery = formData.get("searchQuery");
+
+  if (searchQuery) {
+    redirect("/search?query" + searchQuery);
+  }
+}
+
+export default async function Navbar() {
+  const cart = await getCart();
+
   return (
-    <div className="  text-center p-2 font-semibold text-xl flex justify-between">
-      <div></div>
-      <div className="flex gap-4">
-        <a href="/">
-          <Image src={"/images/logo.png"} width={150} height={100} />
-        </a>
+    // <div className="  text-center p-2 font-semibold text-xl flex justify-between">
+    //   <div></div>
+    //   <div className="flex gap-4">
+    //     <a href="/">
+    //       <Image src={"/images/logo.png"} width={150} height={100} alt={""} />
+    //     </a>
+    //   </div>
+    //   <div>
+    //     <a href="/cart">Cart</a>
+    //   </div>
+    // </div>
+    <div className="bg-white">
+      <div className="navbar max-w-7xl flex flex-col sm:flex-row gap-2">
+        <div className="flex-1">
+          <Link href="/">
+            <Image
+              src={"/images/logo.png"}
+              width={100}
+              height={100}
+              alt="Logo"
+              className="hover:scale-95 duration-500"
+            />
+          </Link>
+        </div>
+        <div className="flex-none gap-2">
+          <form action={searchProducts}>
+            <div className="">
+              <input
+                type="text"
+                name="searchQuery"
+                placeholder="Search"
+                className="w-full min-w-[100px] "
+              />
+            </div>
+          </form>
+          <ShoppingCartButton cart={cart} />
+        </div>
       </div>
-      <div>Cart</div>
     </div>
   );
 }
