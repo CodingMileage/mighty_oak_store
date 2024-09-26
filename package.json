@@ -13,10 +13,21 @@
     "@emotion/styled": "^11.13.0",
     "@mui/material": "^6.1.1",
     "@prisma/client": "^5.19.1",
+    "@radix-ui/react-navigation-menu": "^1.2.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "cobe": "^0.6.3",
+    "embla-carousel-autoplay": "^8.3.0",
+    "embla-carousel-react": "^8.3.0",
+    "framer-motion": "^11.8.0",
+    "lucide-react": "^0.446.0",
     "mighty_oak_store": "file:",
     "next": "14.2.13",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-spring": "^9.7.4",
+    "tailwind-merge": "^2.5.2",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/node": "^20",
