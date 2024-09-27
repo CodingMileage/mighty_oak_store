@@ -65,18 +65,19 @@ export default function CartEntry({
                 });
               }}
             >
+              <option value={0}>0 (Remove)</option>
               {quantityOptions}
             </select>
           </div>
           <div className="flex itens-center gap-3">
             Total: {formatPrice(product.price * quantity)}
+            {isPending && (
+              <ProgressSpinner
+                style={{ width: "25px", height: "25px" }}
+                strokeWidth="4"
+              />
+            )}
           </div>
-          {isPending && (
-            <ProgressSpinner
-              style={{ width: "25px", height: "25px" }}
-              strokeWidth="4"
-            />
-          )}
         </div>
         {/* <ProgressBar
           mode="indeterminate"

@@ -13,6 +13,8 @@ import {
 import Button from "@mui/material/Button";
 import { Container } from "@mui/material";
 import { formatCurrency, formatPrice } from "@/lib/format";
+import AddToCart from "@/app/products/[id]/AddToCart";
+import { incrementProductQuantity } from "@/app/products/[id]/actions";
 
 interface ProductCardProps {
   product: Product;
@@ -148,8 +150,12 @@ export default function ProductCard({ product }: ProductCardProps) {
               size="large"
               className="w-full text-white rounded-full bg-emerald-600 hover:bg-emerald-500"
             >
-              <Link href={"/products/" + product.id}>Add To Cart</Link>
+              <Link href={"/products/" + product.id}>Details</Link>
             </Button>
+            {/* <AddToCart
+              productId={product?.id}
+              incrementProductQuantity={incrementProductQuantity}
+            /> */}
           </CardFooter>
         </Card>
       </div>

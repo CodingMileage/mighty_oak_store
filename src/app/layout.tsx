@@ -6,6 +6,7 @@ import { Inter as FontSans } from "next/font/google";
 import { ny } from "@/lib/utils";
 
 import { NavigationMenuDemo } from "@/components/Nav";
+import SessionProvider from "./SessionProvider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -41,10 +42,12 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <Navbar />
+        <SessionProvider>
+          <Navbar />
 
-        {/* <NavigationMenuDemo /> */}
-        <main className="p-4 max-w-7xl m-auto min-w-[300px]">{children}</main>
+          {/* <NavigationMenuDemo /> */}
+          <main className="p-4 max-w-7xl m-auto min-w-[300px]">{children}</main>
+        </SessionProvider>
       </body>
     </html>
   );
