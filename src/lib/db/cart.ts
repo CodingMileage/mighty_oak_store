@@ -22,6 +22,10 @@ export async function getCart(): Promise<ShoppingCart | null> {
   
   let cart: CartWithProducts | null = null
 
+  if (session) {
+    
+  }
+
   const localCartId = cookies().get("localCartId")?.value;
   const cart = localCartId
     ? await prisma.cart.findUnique({
