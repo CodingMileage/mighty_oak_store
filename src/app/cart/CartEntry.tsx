@@ -5,6 +5,9 @@ import { formatPrice } from "@/lib/format";
 import Image from "next/image";
 import Link from "next/link";
 import { useTransition } from "react";
+
+import { Toast } from "primereact/toast";
+
 import { start } from "repl";
 
 import { ProgressBar } from "primereact/progressbar";
@@ -14,6 +17,28 @@ import { DataView, DataViewLayoutOptions } from "primereact/dataview";
 import { ProgressSpinner } from "primereact/progressspinner";
 
 import { DataScroller } from "primereact/datascroller";
+
+import React, { useRef } from "react";
+import { Button } from "primereact/button";
+
+export function BasicDemo() {
+  const toast = useRef<Toast>(null);
+
+  const show = () => {
+    toast.current?.show({
+      severity: "info",
+      summary: "Info",
+      detail: "Message Content",
+    });
+  };
+
+  return (
+    <div className="card flex justify-content-center">
+      <Toast ref={toast} />
+      <Button onClick={show} label="Show" />
+    </div>
+  );
+}
 
 interface CartEntryProps {
   cartItem: CartItemWithProduct;
@@ -36,6 +61,7 @@ export default function CartEntry({
 
   return (
     <div>
+      <BasicDemo />
       <div className="flex flex-wrap items-center gap-3">
         <Link href={"/products/" + product.id} className="font-bold">
           <Image

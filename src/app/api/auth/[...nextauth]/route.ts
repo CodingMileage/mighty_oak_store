@@ -4,6 +4,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 import { env } from "@/lib/env";
 import GoogleProvider from "next-auth/providers/google";
+import { mergeAnonCartIntoUserCart } from "@/lib/db/cart";
 
 const prisma = new PrismaClient();
 
@@ -15,11 +16,16 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    session({session, user}) {
-        session.user.id = user.id
-        return session;
+    session({ session, user }) {
+      session.user.id = user.id;
+      return session;
     },
-  }
+  },
+  events: {
+    async signIn({ user }) {
+      await mergeAnonCartIntoUserCart(user.id);
+    },
+  },
   adapter: PrismaAdapter(prisma),
 };
 
