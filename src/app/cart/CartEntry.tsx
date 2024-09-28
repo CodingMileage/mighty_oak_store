@@ -1,44 +1,13 @@
 "use client";
 
+import React, { useRef } from "react";
 import { CartItemWithProduct } from "@/lib/db/cart";
 import { formatPrice } from "@/lib/format";
 import Image from "next/image";
 import Link from "next/link";
 import { useTransition } from "react";
-
 import { Toast } from "primereact/toast";
-
-import { start } from "repl";
-
-import { ProgressBar } from "primereact/progressbar";
-
-import { DataView, DataViewLayoutOptions } from "primereact/dataview";
-
 import { ProgressSpinner } from "primereact/progressspinner";
-
-import { DataScroller } from "primereact/datascroller";
-
-import React, { useRef } from "react";
-import { Button } from "primereact/button";
-
-export function BasicDemo() {
-  const toast = useRef<Toast>(null);
-
-  const show = () => {
-    toast.current?.show({
-      severity: "info",
-      summary: "Info",
-      detail: "Message Content",
-    });
-  };
-
-  return (
-    <div className="card flex justify-content-center">
-      <Toast ref={toast} />
-      <Button onClick={show} label="Show" />
-    </div>
-  );
-}
 
 interface CartEntryProps {
   cartItem: CartItemWithProduct;
@@ -49,8 +18,10 @@ export default function CartEntry({
   cartItem: { product, quantity },
   setProductQuantity,
 }: CartEntryProps) {
-  const [isPending, startTransistion] = useTransition();
+  const [isPending, startTransition] = useTransition();
   const quantityOptions: JSX.Element[] = [];
+  const toast = useRef<Toast>(null);
+
   for (let i = 1; i <= 99; i++) {
     quantityOptions.push(
       <option value={i} key={i}>
@@ -59,9 +30,30 @@ export default function CartEntry({
     );
   }
 
+  const handleQuantityChange = (newQuantity: number) => {
+    startTransition(async () => {
+      await setProductQuantity(product.id, newQuantity);
+
+      // Show toast notification based on quantity change
+      if (newQuantity === 0) {
+        toast.current?.show({
+          severity: "warn",
+          summary: "Removed",
+          detail: `${product.name} was removed from your cart`,
+        });
+      } else {
+        toast.current?.show({
+          severity: "success",
+          summary: "Updated",
+          detail: `${product.name} quantity updated to ${newQuantity}`,
+        });
+      }
+    });
+  };
+
   return (
     <div>
-      <BasicDemo />
+      <Toast ref={toast} />
       <div className="flex flex-wrap items-center gap-3">
         <Link href={"/products/" + product.id} className="font-bold">
           <Image
@@ -81,21 +73,17 @@ export default function CartEntry({
             Quantity:
             <select
               className="select w-full max-w-xs select-bordered bg-white"
-              name=""
-              id=""
               defaultValue={quantity}
               onChange={(e) => {
                 const newQuantity = parseInt(e.currentTarget.value);
-                startTransistion(async () => {
-                  await setProductQuantity(product.id, newQuantity);
-                });
+                handleQuantityChange(newQuantity);
               }}
             >
               <option value={0}>0 (Remove)</option>
               {quantityOptions}
             </select>
           </div>
-          <div className="flex itens-center gap-3">
+          <div className="flex items-center gap-3">
             Total: {formatPrice(product.price * quantity)}
             {isPending && (
               <ProgressSpinner
@@ -105,10 +93,6 @@ export default function CartEntry({
             )}
           </div>
         </div>
-        {/* <ProgressBar
-          mode="indeterminate"
-          style={{ height: "6px" }}
-        ></ProgressBar> */}
       </div>
       <div className="divider" />
     </div>
