@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/NavBar";
 import { Inter as FontSans } from "next/font/google";
 import { ny } from "@/lib/utils";
+import "primereact/resources/themes/lara-light-cyan/theme.css";
 
 import { NavigationMenuDemo } from "@/components/Nav";
 import SessionProvider from "./SessionProvider";

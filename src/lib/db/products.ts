@@ -11,3 +11,16 @@ export default async function handler(req, res) {
     res.status(500).json({ error: "Failed to fetch products" });
   }
 }
+
+export async function getProducts() {
+  try {
+    const products = await prisma.product.findMany({
+      where: { comingSoon: false },
+      orderBy: { id: "desc" },
+    });
+    return products;
+  } catch (error) {
+    console.error("Error fetching non-coming-soon products:", error);
+    throw new Error("Failed to fetch products");
+  }
+}

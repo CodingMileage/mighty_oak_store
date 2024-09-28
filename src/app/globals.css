@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "primeicons/primeicons.css";
+@import "primereact/resources/themes/saga-blue/theme.css"; /* Choose your desired theme */
+@import "primereact/resources/primereact.min.css";
+
 @layer base {
   :root {
     --background: 0 0% 100%;

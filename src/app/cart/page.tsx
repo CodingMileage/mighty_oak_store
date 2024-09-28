@@ -1,10 +1,9 @@
-import ProductCard from "@/components/ProductCard";
-import { getCart } from "@/lib/db/cart";
-import { prisma } from "@/lib/db/prisma";
+// src/app/cart/page.tsx or src/pages/cart.tsx
 import CartEntry from "./CartEntry";
-import { setProductQuantity } from "./actions";
-import InlineDataScrollerDemo from "@/components/DataScroll";
+import { getCart } from "@/lib/db/cart";
 import { formatPrice } from "@/lib/format";
+import CheckoutButton from "@/components/CheckoutButton";
+import { setProductQuantity } from "./actions";
 
 export const metadata = {
   title: "Your Cart - The Mighty Oak Store",
@@ -15,7 +14,6 @@ export default async function CartPage() {
 
   return (
     <div>
-      {/* <InlineDataScrollerDemo /> */}
       {cart?.items.map((cartItem) => (
         <CartEntry
           cartItem={cartItem}
@@ -28,7 +26,8 @@ export default async function CartPage() {
         <p className="mb-3 font-bold">
           Total: {formatPrice(cart?.subtotal || 0)}
         </p>
-        <button className="btn btn-primary sm:w-[200px]">Checkout</button>
+        {/* Pass items to CheckoutButton */}
+        <CheckoutButton items={cart?.items} />
       </div>
     </div>
   );

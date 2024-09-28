@@ -13,7 +13,7 @@ async function searchProducts(formData: FormData) {
   const searchQuery = formData.get("searchQuery");
 
   if (searchQuery) {
-    redirect("/search?query" + searchQuery);
+    redirect("/search?query=" + searchQuery);
   }
 }
 
@@ -22,21 +22,11 @@ export default async function Navbar() {
   const cart = await getCart();
 
   return (
-    // <div className="  text-center p-2 font-semibold text-xl flex justify-between">
-    //   <div></div>
-    //   <div className="flex gap-4">
-    //     <a href="/">
-    //       <Image src={"/images/logo.png"} width={150} height={100} alt={""} />
-    //     </a>
-    //   </div>
-    //   <div>
-    //     <a href="/cart">Cart</a>
-    //   </div>
-    // </div>
     <div className="bg-white">
-      <div className="navbar max-w-7xl flex flex-col sm:flex-row gap-2">
-        <div className="flex-1">
-          <Link href="/" className=" text-xl normal-case">
+      <div className="navbar max-w-7xl mx-auto flex justify-between items-center py-2">
+        {/* Left: Logo */}
+        <div className="flex items-center">
+          <Link href="/" className="text-xl normal-case">
             <Image
               src={"/images/logo.png"}
               width={100}
@@ -46,14 +36,16 @@ export default async function Navbar() {
             />
           </Link>
         </div>
-        <div className="flex-none gap-2">
+
+        {/* Right: Search bar, ShoppingCart, UserMenu */}
+        <div className="flex items-center gap-2">
           <form action={searchProducts}>
             <div className="form-control">
               <input
                 type="text"
                 name="searchQuery"
                 placeholder="Search"
-                className="input input-borderedw-full min-w-[100px] bg-slate-200"
+                className="input input-bordered w-full min-w-[100px] bg-slate-200"
               />
             </div>
           </form>

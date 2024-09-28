@@ -1,10 +1,12 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import { Button } from "primereact/button";
 import { DataView } from "primereact/dataview";
 import { Rating } from "primereact/rating";
 import { Tag } from "primereact/tag";
 import { classNames } from "primereact/utils";
-// import { ProductService } from "./service/ProductService";
+import { ProductService } from "@/service/ProductService";
 
 interface Product {
   id: string;
@@ -19,14 +21,12 @@ interface Product {
   rating: number;
 }
 
-export default function BasicDemo() {
+export default function PaginationDemo() {
   const [products, setProducts] = useState<Product[]>([]);
 
-  //   useEffect(() => {
-  //     ProductService.getProductsSmall().then((data) =>
-  //       setProducts(data.slice(0, 5))
-  //     );
-  //   }, []);
+  useEffect(() => {
+    ProductService.getProducts().then((data) => setProducts(data));
+  }, []);
 
   const getSeverity = (product: Product) => {
     switch (product.inventoryStatus) {
@@ -44,7 +44,7 @@ export default function BasicDemo() {
     }
   };
 
-  const itemTemplate = (product: Product, index: number) => {
+  const itemTemplate = (product, index) => {
     return (
       <div className="col-12" key={product.id}>
         <div
@@ -87,7 +87,7 @@ export default function BasicDemo() {
     );
   };
 
-  const listTemplate = (items: Product[]) => {
+  const listTemplate = (items: Product) => {
     if (!items || items.length === 0) return null;
 
     let list = items.map((product, index) => {
@@ -99,7 +99,12 @@ export default function BasicDemo() {
 
   return (
     <div className="card">
-      <DataView value={products} listTemplate={listTemplate} />
+      <DataView
+        value={products}
+        listTemplate={listTemplate}
+        paginator
+        rows={5}
+      />
     </div>
   );
 }

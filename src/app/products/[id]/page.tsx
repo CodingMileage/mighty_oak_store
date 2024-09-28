@@ -5,6 +5,7 @@ import Image from "next/image";
 import { cache } from "react";
 import AddToCart from "./AddToCart";
 import { incrementProductQuantity } from "./actions";
+import { ConfettiButtonDemo } from "@/components/ConfettiB";
 
 interface ProductPageProps {
   params: {
@@ -54,6 +55,7 @@ export default async function ProductPage({
               productId={product?.id}
               incrementProductQuantity={incrementProductQuantity}
             />
+            <ConfettiButtonDemo />
           </div>
         </>
       ) : (
