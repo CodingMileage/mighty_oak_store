@@ -27,7 +27,10 @@ export default async function CartPage() {
           Total: {formatPrice(cart?.subtotal || 0)}
         </p>
         {/* Pass items to CheckoutButton */}
-        <CheckoutButton items={cart?.items} />
+        <a href={`cart/${cart?.id}/purchase`}>
+          <button>Checkout</button>
+          {/* <CheckoutButton items={cart?.items} /> */}
+        </a>
       </div>
     </div>
   );

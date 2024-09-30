@@ -11,6 +11,7 @@ export default function Hero() {
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1.5, ease: "easeOut" }}
+      className="pb-5"
     >
       <Container maxWidth="lg" className="flex justify-between rounded-md p-4">
         <div className="flex flex-col justify-around w-full rounded-md max-w-xl items-center pr-4">

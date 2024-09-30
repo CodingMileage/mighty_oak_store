@@ -8,6 +8,7 @@ import {
 } from "@/components/Nyxb/Sparkle";
 import Hero from "@/components/Hero";
 import BasicDemo from "./sections/Collection/List/page";
+import Pay from "@/components/Stripe";
 
 export default async function Home() {
   // Fetch products from the database
@@ -43,7 +44,8 @@ export default async function Home() {
     <>
       {/* Hero Section */}
       <Hero />
-      {/* <BasicDemo /> */}
+
+      <Pay />
 
       {/* Main Product Grid */}
       <Container maxWidth="md">
