@@ -8,16 +8,17 @@ datasource db {
 }
 
 model Product {
-  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
   description String
   imageUrl    String
   name        String
   price       Int
   quantity    Int
-  comingSoon  Boolean    @default(false)
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  comingSoon  Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
   CartItem    CartItem[]
+  OrderItem   OrderItem[]
 
   @@map("products")
 }
@@ -42,6 +43,31 @@ model CartItem {
   cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
 
   @@map("cartitems")
+}
+
+model Order {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String      @db.ObjectId
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items       OrderItem[] // Relationship to OrderItem for purchased products
+  totalAmount Int // Total amount for the order
+  status      String // Order status (e.g., 'pending', 'completed', 'shipped')
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  orderId   String  @db.ObjectId
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String  @db.ObjectId
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  quantity  Int // Quantity of the product purchased
+  price     Int // Price at the time of purchase
+
+  @@map("orderitems")
 }
 
 model Account {
@@ -83,6 +109,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   Cart          Cart[]
+  Order         Order[]
 
   @@map("users")
 }

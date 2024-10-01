@@ -5,6 +5,7 @@ import { formatPrice } from "@/lib/format";
 import CheckoutButton from "@/components/CheckoutButton";
 import { setProductQuantity } from "./actions";
 import { prisma } from "@/lib/db/prisma";
+import Link from "next/link";
 
 export const metadata = {
   title: "Your Cart - The Mighty Oak Store",
@@ -28,10 +29,10 @@ export default async function CartPage() {
           Total: {formatPrice(cart?.subtotal || 0)}
         </p>
         {/* Pass items to CheckoutButton */}
-        <a href={`cart/${cart?.id}/purchase`}>
+        <Link href={`cart/${cart?.id}/purchase`}>
           <button>Checkout</button>
           {/* <CheckoutButton items={cart?.items} /> */}
-        </a>
+        </Link>
       </div>
     </div>
   );

@@ -78,7 +78,13 @@ function Form({ subtotal }: { subtotal: number }) {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [email, setEmail] = useState<string>();
-  const [address, setAddress] = useState<string>("");
+  const [name, setName] = useState<string>();
+  const [phone, setPhone] = useState<string>();
+  const [addressDetails, setAddressDetails] = useState<{
+    line1?: string;
+    city?: string;
+    state?: string;
+  }>({});
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -95,9 +101,14 @@ function Form({ subtotal }: { subtotal: number }) {
           return_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/stripe/purchase-success`,
           payment_method_data: {
             billing_details: {
+              name: name,
+              phone: phone,
               email: email,
               address: {
-                line1: address, // Assuming the address captured is line1
+                line1: addressDetails.line1,
+                city: addressDetails.city,
+                state: addressDetails.state, // Assuming the address captured is line1
+                // Assuming the address captured is line1
               },
             },
           },
@@ -113,6 +124,9 @@ function Form({ subtotal }: { subtotal: number }) {
           } else {
             setErrorMessage("An unknown error occurred");
           }
+        } else {
+          // Success! Handle the redirection or display success message
+          window.location.href = `${process.env.NEXT_PUBLIC_SERVER_URL}/stripe/purchase-success`;
         }
       })
       .finally(() => setIsLoading(false));
@@ -139,17 +153,13 @@ function Form({ subtotal }: { subtotal: number }) {
             onChange={(event) => {
               if (event.complete) {
                 // Extract the complete address
-                const address = [
-                  event.value.address.line1,
-                  event.value.address.line2,
-                  event.value.address.city,
-                  event.value.address.state,
-                  event.value.address.postal_code,
-                  event.value.address.country,
-                ]
-                  .filter(Boolean)
-                  .join(", ");
-                setAddress(address);
+                setAddressDetails({
+                  city: event.value.address.city,
+                  line1: event.value.address.line1,
+                  state: event.value.address.state,
+                });
+                setName(event.value.name);
+                setPhone(event.value.phone);
               }
             }}
           />

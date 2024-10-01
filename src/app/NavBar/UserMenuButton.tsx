@@ -4,6 +4,7 @@ import { Session } from "next-auth";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Image from "next/image";
 import { signIn, signOut } from "next-auth/react";
+import Link from "next/link";
 
 interface UserMenuButtonProps {
   session: Session | null;
@@ -33,12 +34,17 @@ export default function UserMenuButton({ session }: UserMenuButtonProps) {
       >
         <li>
           {user ? (
-            <button
-              onClick={() => signOut({ callbackUrl: "/" })}
-              className="bg-white"
-            >
-              Sign Out
-            </button>
+            <>
+              <Link href={"/orders"}>
+                <button className="bg-white">Orders</button>
+              </Link>
+              <button
+                onClick={() => signOut({ callbackUrl: "/" })}
+                className="bg-white"
+              >
+                Sign Out
+              </button>
+            </>
           ) : (
             <button onClick={() => signIn()} className="bg-white">
               Sign In

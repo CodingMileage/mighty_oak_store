@@ -1,17 +1,15 @@
-import { getCart } from "@/lib/db/cart";
 import { prisma } from "@/lib/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { Resend } from "resend";
+import { getCart } from "@/lib/db/cart"; // Assumed function for getting the user's cart
+// import PurchaseReceiptEmail from "@/email/PurchaseReceipt"; // For sending an email receipt
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
-const resend = new Resend(process.env.RESEND_API_KEY as string);
 
 export async function POST(req: NextRequest) {
   let event;
 
   try {
-    // Construct Stripe webhook event
     event = await stripe.webhooks.constructEvent(
       await req.text(),
       req.headers.get("stripe-signature") as string,
@@ -22,50 +20,68 @@ export async function POST(req: NextRequest) {
     return new NextResponse("Webhook Error", { status: 400 });
   }
 
-  // Check if the event is a charge succeeded event
   if (event.type === "charge.succeeded") {
     const charge = event.data.object as Stripe.Charge;
-    const productId = charge.metadata.productId;
     const email = charge.billing_details.email;
-    const priceInCents = charge.amount;
+    const pricePaidInCents = charge.amount;
+    const address = charge.billing_details.address;
+    const phone = charge.billing_details.phone;
 
-    // Check if productId and email are present
-    if (!productId || !email) {
-      console.error("Missing productId or email in charge metadata");
+    if (!email) {
+      console.error("Missing email in charge metadata");
       return new NextResponse("Bad Request", { status: 400 });
     }
 
-    // Fetch cart items (if necessary)
-    const cart = await getCart(); // Remove if unnecessary
-
-    // Find cart item based on productId
-    const item = await prisma.cartItem.findUnique({
-      where: { id: productId },
-    });
-
-    if (!item) {
-      console.error("Invalid productId");
-      return new NextResponse("Bad Request", { status: 400 });
+    // Fetch or create the user
+    let user = await prisma.user.findUnique({ where: { email } });
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          email,
+          // You can add other user fields here if necessary
+          name: charge.billing_details.name,
+          image: null,
+        },
+      });
     }
 
-    // Prepare user fields for upsert
-    const userFields = {
-      email,
-      orders: { create: { productId, priceInCents } },
-    };
+    // Get the user's cart and its items (assumed function)
+    const cart = await prisma.cart.findMany();
+    console.log(cart);
+    // if (!cart) {
+    //   console.error("No cart or cart items found for user:", user.id);
+    //   return new NextResponse("No items in cart", { status: 400 });
+    // }
 
-    console.log("User fields:", userFields);
+    // Create the order
+    // const order = await prisma.order.create({
+    //   data: {
+    //     userId: user.id,
+    //     totalAmount: pricePaidInCents,
+    //     status: "completed",
+    //     items: {
+    //       create: cart?.items.map((cartItem: any) => ({
+    //         productId: cartItem.productId,
+    //         quantity: cartItem.quantity,
+    //         price: cartItem.product.price, // Price at the time of purchase
+    //       })),
+    //     },
+    //   },
+    //   include: {
+    //     items: true, // Optionally include the items in the response
+    //   },
+    // });
 
-    // Upsert user (create if not exists, otherwise update)
-    await prisma.user.upsert({
-      where: { email },
-      create: userFields,
-      update: userFields,
-    });
+    // console.log(order);
 
-    // Add any additional logic here, like sending a confirmation email
+    // Clear the cart after the order is processed
+    // await prisma.cart.delete({ where: { id: cart.id } });
 
-    return new NextResponse("Order processed", { status: 200 });
+    // Optionally, send a purchase receipt email
+    // await PurchaseReceiptEmail({ email, order });
+
+    console.log("Order processed successfully for:", email);
+    return new NextResponse("Order created", { status: 200 });
   }
 
   return new NextResponse("Event not handled", { status: 400 });
