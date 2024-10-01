@@ -66,6 +66,8 @@ model OrderItem {
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   quantity  Int // Quantity of the product purchased
   price     Int // Price at the time of purchase
+  name      String
+  imageUrl  String
 
   @@map("orderitems")
 }

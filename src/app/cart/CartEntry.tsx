@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useTransition } from "react";
 import { Toast } from "primereact/toast";
 import { ProgressSpinner } from "primereact/progressspinner";
+import { Container } from "@mui/material";
 
 interface CartEntryProps {
   cartItem: CartItemWithProduct;
@@ -52,7 +53,7 @@ export default function CartEntry({
   };
 
   return (
-    <div>
+    <Container maxWidth="md">
       <Toast ref={toast} />
       <div className="flex flex-wrap items-center gap-3">
         <Link href={"/products/" + product.id} className="font-bold">
@@ -65,7 +66,7 @@ export default function CartEntry({
           />
         </Link>
         <div>
-          <Link href={"/products/" + product.id} className="font-bold">
+          <Link href={"/products/" + product.id} className="font-bold text-4xl">
             {product.name}
           </Link>
           <div>Price: {formatPrice(product.price)}</div>
@@ -84,7 +85,7 @@ export default function CartEntry({
             </select>
           </div>
           <div className="flex items-center gap-3">
-            Total: {formatPrice(product.price * quantity)}
+            SubTotal: {formatPrice(product.price * quantity)}
             {isPending && (
               <ProgressSpinner
                 style={{ width: "25px", height: "25px" }}
@@ -95,6 +96,6 @@ export default function CartEntry({
         </div>
       </div>
       <div className="divider" />
-    </div>
+    </Container>
   );
 }
