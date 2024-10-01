@@ -25,8 +25,6 @@ export default async function PurchasePage({
   }
 
   return (
-    <CheckoutForm cart={cart} clientSecret={paymentIntent.client_secret}>
-      prod
-    </CheckoutForm>
+    <CheckoutForm cart={cart} clientSecret={paymentIntent.client_secret} />
   );
 }

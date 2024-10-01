@@ -4,6 +4,7 @@ import { getCart } from "@/lib/db/cart";
 import { formatPrice } from "@/lib/format";
 import CheckoutButton from "@/components/CheckoutButton";
 import { setProductQuantity } from "./actions";
+import { prisma } from "@/lib/db/prisma";
 
 export const metadata = {
   title: "Your Cart - The Mighty Oak Store",
