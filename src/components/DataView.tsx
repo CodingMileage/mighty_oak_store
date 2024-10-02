@@ -13,7 +13,7 @@ interface Product {
   code: string;
   name: string;
   description: string;
-  image: string;
+  imageUrl: string;
   price: number;
   category: string;
   quantity: number;
@@ -28,6 +28,8 @@ interface BasicDemoProps {
 export default function BasicDemo({ initialProducts }: BasicDemoProps) {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [layout, setLayout] = useState("grid");
+
+  console.log(products);
 
   const getSeverity = (product: Product) => {
     switch (product.inventoryStatus) {
@@ -53,7 +55,7 @@ export default function BasicDemo({ initialProducts }: BasicDemoProps) {
         >
           <img
             className="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
-            src={product.image}
+            src={product.imageUrl}
             alt={product.name}
           />
           <div className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
@@ -102,7 +104,7 @@ export default function BasicDemo({ initialProducts }: BasicDemoProps) {
           <div className="flex flex-column align-items-center gap-3 py-5">
             <img
               className="w-9 shadow-2 border-round"
-              src={product.image}
+              src={product.imageUrl}
               alt={product.name}
             />
             <div className="text-2xl font-bold">{product.name}</div>
