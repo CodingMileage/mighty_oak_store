@@ -41,13 +41,16 @@ export default async function Orders({ userId }: OrdersProps) {
                         src={item.product.imageUrl}
                         alt={item.product.name}
                         style={{ width: "100px", borderRadius: "8px" }}
+                        className="hover:opacity-85 hover:scale-105 duration-500 ease-in-out"
                       />
                     </Link>
                   )}
                   {/* Product name */}
                   <div className="ml-4">
                     <Link href={`/products/${item.product.id}`}>
-                      <h3>{item.product.name}</h3>
+                      <h1 className="font-bold hover:opacity-45">
+                        {item.product.name}
+                      </h1>
                     </Link>
                   </div>
                 </li>
