@@ -2,7 +2,7 @@ import { getCart } from "@/lib/db/cart";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import ShoppingCartButton from "./ShoppingCartButton";
+import ShoppingCartButton from "@/components/ShoppingCartButton";
 import UserMenuButton from "@/app/NavBar/UserMenuButton";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
@@ -39,7 +39,7 @@ export default async function Navbar() {
 
         {/* Right: Search bar, ShoppingCart, UserMenu */}
         <div className="flex items-center gap-2">
-          <form action={searchProducts}>
+          {/* <form action={searchProducts}>
             <div className="form-control">
               <input
                 type="text"
@@ -48,7 +48,7 @@ export default async function Navbar() {
                 className="input input-bordered w-full min-w-[100px] bg-slate-200"
               />
             </div>
-          </form>
+          </form> */}
           <ShoppingCartButton cart={cart} />
           <UserMenuButton session={session} />
         </div>

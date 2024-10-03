@@ -24,10 +24,13 @@ export async function generateMetadata({
   const product = await getProduct(id);
 
   return {
-    title: product?.name + " - The Mighty Oak Store",
-    description: product?.description,
+    title: product?.name
+      ? `${product.name} - The Mighty Oak Store`
+      : "Product Not Found",
+    description:
+      product?.description || "Find the best products at The Mighty Oak Store.",
     openGraph: {
-      images: [{ url: product?.imageUrl }],
+      images: product?.imageUrl ? [{ url: product.imageUrl }] : [],
     },
   };
 }
@@ -36,31 +39,31 @@ export default async function ProductPage({
   params: { id },
 }: ProductPageProps) {
   const product = await getProduct(id);
+
+  if (!product) {
+    return <p>Product not found</p>;
+  }
+
   return (
-    <div className="flex flex-col lg:flex-row gap-4 lg:items-center">
-      {product ? (
-        <>
-          <Image
-            src={product.imageUrl}
-            width={200}
-            height={200}
-            alt={product.name || "Product Image"}
-            priority // Optional: for optimization
-          />
-          <div>
-            <h2 className="text-5xl font-bold">{product.name}</h2>
-            <PriceTag price={product.price} className="mt-4" />
-            <p className="py-6">{product.description}</p>
-            <AddToCart
-              productId={product?.id}
-              incrementProductQuantity={incrementProductQuantity}
-            />
-            <ConfettiButtonDemo />
-          </div>
-        </>
-      ) : (
-        <p>Product not found</p>
-      )}
+    <div className="container mx-auto flex flex-col lg:flex-row gap-4 lg:items-center">
+      <Image
+        src={product.imageUrl || "/placeholder.jpg"}
+        width={200}
+        height={200}
+        alt={product.name || "Product Image"}
+        priority={true}
+        className="rounded"
+      />
+      <div>
+        <h2 className="text-5xl font-bold">{product.name}</h2>
+        <PriceTag price={product.price} className="mt-4" />
+        <p className="py-6">{product.description}</p>
+        <AddToCart
+          productId={product.id}
+          incrementProductQuantity={incrementProductQuantity}
+        />
+        {/* <ConfettiButtonDemo /> */}
+      </div>
     </div>
   );
 }

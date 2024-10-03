@@ -44,7 +44,7 @@ export default async function Home() {
     <>
       {/* Hero Section */}
       <Hero />
-      {/* <BasicDemo initialProducts={[]} /> */}
+      <BasicDemo initialProducts={products} />
 
       {/* Main Product Grid */}
       <Container maxWidth="md">

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Navbar from "@/components/NavBar";
+import Navbar from "./NavBar/NavBar";
 import { Inter as FontSans } from "next/font/google";
 import { ny } from "@/lib/utils";
 import "primereact/resources/themes/lara-light-cyan/theme.css";

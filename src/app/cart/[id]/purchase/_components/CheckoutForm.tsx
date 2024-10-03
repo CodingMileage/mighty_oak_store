@@ -21,6 +21,7 @@ import {
 import { loadStripe } from "@stripe/stripe-js";
 import Image from "next/image";
 import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 type CheckoutFormProps = {
   cart: {
@@ -87,6 +88,8 @@ function Form({ subtotal }: { subtotal: number }) {
     state?: string;
   }>({});
 
+  const router = useRouter();
+
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
@@ -127,7 +130,9 @@ function Form({ subtotal }: { subtotal: number }) {
           }
         } else {
           // Success! Handle the redirection or display success message
-          window.location.href = `${process.env.NEXT_PUBLIC_SERVER_URL}/stripe/purchase-success`;
+          //Rounter here
+          // window.location.href = `${process.env.NEXT_PUBLIC_SERVER_URL}/stripe/purchase-success`;
+          router.push("/stripe/purchase-success");
         }
       })
       .finally(() => setIsLoading(false));

@@ -2,20 +2,39 @@ import { prisma } from "@/lib/db/prisma";
 import { Container } from "@mui/material";
 import Link from "next/link";
 import { formatPrice } from "@/lib/format";
+import { getServerSession } from "next-auth"; // Ensure you're using next-auth or a similar auth provider
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
 interface OrdersProps {
   userId: string; // Expecting userId as a prop
 }
 
 export default async function Orders({ userId }: OrdersProps) {
+  const session = await getServerSession(authOptions);
+
+  // Check if user is authenticated
+  if (!session || !session.user || !session.user.email) {
+    return <p>Please log in to view your orders.</p>;
+  }
+
+  // Get the user's ID or email
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email }, // Use session email to find user
+  });
+
+  if (!user) {
+    return <p>User not found.</p>;
+  }
+
+  // Fetch orders based on user ID
   const orders = await prisma.order.findMany({
-    where: { userId }, // Filter orders by userId
-    include: { items: { include: { product: true } } },
+    where: { userId: user.id }, // Filter orders by userId
+    include: { items: { include: { product: true } } }, // Include items and product details
   });
 
   return (
     <Container maxWidth="lg">
-      <h1>Orders for User ID: {userId}</h1>
+      <h1 className="font-bold text-2xl">Orders for: {session.user.name}</h1>
       {orders.length === 0 ? (
         <p>No orders found for this user.</p>
       ) : (

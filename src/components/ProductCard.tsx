@@ -145,17 +145,19 @@ export default function ProductCard({ product }: ProductCardProps) {
           </CardHeader>
 
           <CardFooter className="p-4 mt-auto">
-            <Button
+            {/* <Button
               asChild
               size="large"
               className="w-full text-white rounded-full bg-emerald-600 hover:bg-emerald-500"
             >
-              <Link href={"/products/" + product.id}>Details</Link>
-            </Button>
-            {/* <AddToCart
+              <Link href={"/products/" + product.id} className="font-bold">
+                Details
+              </Link>
+            </Button> */}
+            <AddToCart
               productId={product?.id}
               incrementProductQuantity={incrementProductQuantity}
-            /> */}
+            />
           </CardFooter>
         </Card>
       </div>

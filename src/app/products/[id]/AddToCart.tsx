@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { incrementProductQuantity } from "./actions";
+import { Button } from "@mui/material";
 
 interface AddToCartProps {
   productId: string;
@@ -13,9 +14,9 @@ export default function AddToCart({ productId }: AddToCartProps) {
   const [success, setSuccess] = useState(false);
 
   return (
-    <div className="flex items-center gap-2">
-      <button
-        className="btn btn-primary"
+    <div className="flex w-full items-center gap-2">
+      <Button
+        className="w-full text-white rounded-full bg-emerald-600 hover:bg-emerald-500"
         onClick={() => {
           setSuccess(false);
           startTransition(async () => {
@@ -25,7 +26,7 @@ export default function AddToCart({ productId }: AddToCartProps) {
         }}
       >
         Add to cart
-      </button>
+      </Button>
       {isPending && <span className="loading loading-spinner loading-md" />}
       {!isPending && success && (
         <span className="text-success">Added to cart</span>

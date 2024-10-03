@@ -78,7 +78,7 @@ export async function POST(req: NextRequest) {
     console.log("Order created:", order);
 
     // // Clear the cart after the order is processed
-    // await prisma.cart.delete({ where: { userId: user.id } });
+    await prisma.cart.delete({ where: { userId: user.id } });
 
     console.log("Order processed successfully for:", email);
     return new NextResponse("Order created", { status: 200 });
