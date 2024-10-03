@@ -35,6 +35,7 @@ type CheckoutFormProps = {
     }>;
   };
   clientSecret: string;
+  metadata: { email: string; userId: string };
 };
 
 const stripePromise = loadStripe(

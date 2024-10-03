@@ -7,6 +7,8 @@ import { setProductQuantity } from "./actions";
 import { prisma } from "@/lib/db/prisma";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { getServerSession } from "next-auth"; // Import the getServerSession function
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export const metadata = {
   title: "Your Cart - The Mighty Oak Store",
@@ -14,20 +16,29 @@ export const metadata = {
 
 export default async function CartPage() {
   const cart = await getCart();
+  const email = "brandon2056@gmail.com";
+  // let user = await prisma.user.findUnique({ where: { email } });
 
-  const cart2 = await prisma.cart.findMany({
-    include: { items: { include: { product: true } } },
-  });
+  const session = await getServerSession(authOptions);
 
-  cart2.forEach((cart) => {
-    console.log(`Cart ID: ${cart.id}`);
-    cart.items.forEach((item) => {
-      console.log(
-        `Item ID: ${item.id}, Product Name: ${item.product.name}, Quantity: ${item.quantity}`
-      );
-      // Add more fields if necessary
-    });
-  });
+  // Ensure user ID is available
+  const userId = session?.user?.id;
+
+  let user = await prisma.user.findUnique({ where: { id: userId } });
+
+  console.log(user);
+
+  // const cart2 = await prisma.cart.findUnique({
+  //   where: { userId: user.id },
+  //   include: { items: { include: { product: true } } },
+  // });
+
+  // console.log(`Cart ID: ${cart2.id}`);
+  // cart2.items.forEach((item) => {
+  //   console.log(
+  //     `Item ID: ${item.id}, Product Name: ${item.product.name}, Quantity: ${item.quantity}`
+  //   );
+  // });
 
   return (
     <div>

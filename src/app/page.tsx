@@ -46,8 +46,6 @@ export default async function Home() {
       <Hero />
       {/* <BasicDemo initialProducts={[]} /> */}
 
-      <Pay />
-
       {/* Main Product Grid */}
       <Container maxWidth="md">
         <SparklesTextDemo />
