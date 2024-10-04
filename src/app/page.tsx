@@ -9,6 +9,7 @@ import {
 import Hero from "@/components/Hero";
 import BasicDemo from "@/components/DataView";
 import Pay from "@/components/Stripe";
+import BasicDemoo from "@/components/Knob";
 
 export default async function Home() {
   // Fetch products from the database
@@ -44,7 +45,8 @@ export default async function Home() {
     <>
       {/* Hero Section */}
       <Hero />
-      <BasicDemo initialProducts={products} />
+      {/* <BasicDemo initialProducts={products} /> */}
+      {/* <BasicDemoo /> */}
 
       {/* Main Product Grid */}
       <Container maxWidth="md">

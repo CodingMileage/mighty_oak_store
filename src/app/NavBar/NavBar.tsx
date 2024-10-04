@@ -24,13 +24,26 @@ export default async function Navbar() {
   return (
     <div className="bg-white">
       <div className="navbar max-w-7xl mx-auto flex justify-between items-center py-2">
-        {/* Left: Logo */}
-        <div className="flex items-center">
+        {/* Left: Links (for example, Home, Shop, etc.) */}
+        <div className="flex items-center gap-4">
+          <Link href="/" className="text-lg">
+            Home
+          </Link>
+          <Link href="/shop" className="text-lg">
+            Shop
+          </Link>
+          <Link href="/about" className="text-lg">
+            About
+          </Link>
+        </div>
+
+        {/* Center: Logo */}
+        <div className="flex-grow flex justify-center">
           <Link href="/" className="text-xl normal-case">
             <Image
               src={"/images/logo.png"}
-              width={100}
-              height={100}
+              width={125}
+              height={125}
               alt="Logo"
               className="hover:scale-105 duration-500"
             />
@@ -39,16 +52,6 @@ export default async function Navbar() {
 
         {/* Right: Search bar, ShoppingCart, UserMenu */}
         <div className="flex items-center gap-2">
-          {/* <form action={searchProducts}>
-            <div className="form-control">
-              <input
-                type="text"
-                name="searchQuery"
-                placeholder="Search"
-                className="input input-bordered w-full min-w-[100px] bg-slate-200"
-              />
-            </div>
-          </form> */}
           <ShoppingCartButton cart={cart} />
           <UserMenuButton session={session} />
         </div>

@@ -16,6 +16,9 @@ import { formatCurrency, formatPrice } from "@/lib/format";
 import AddToCart from "@/app/products/[id]/AddToCart";
 import { incrementProductQuantity } from "@/app/products/[id]/actions";
 
+import { Rating } from "primereact/rating";
+import StarRating from "./Rating";
+
 interface ProductCardProps {
   product: Product;
 }
@@ -136,11 +139,12 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
 
           <CardHeader className="p-4">
-            <CardTitle className="text-center text-lg font-semibold mb-2">
-              {product.name}
-            </CardTitle>
-            <CardDescription className="text-center text-gray-600">
+            <CardTitle className="flex justify-between text-center text-lg font-semibold mb-2">
+              <StarRating value={3.5} />
               {formatPrice(product.price)}
+            </CardTitle>
+            <CardDescription className="font-bold text-xl text-center text-gray-600">
+              {product.name}
             </CardDescription>
           </CardHeader>
 

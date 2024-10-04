@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { incrementProductQuantity } from "./actions";
-import { Button } from "@mui/material";
+import { Button } from "@/components/ui/button";
 
 interface AddToCartProps {
   productId: string;
@@ -16,7 +16,7 @@ export default function AddToCart({ productId }: AddToCartProps) {
   return (
     <div className="flex w-full items-center gap-2">
       <Button
-        className="w-full text-white rounded-full bg-emerald-600 hover:bg-emerald-500"
+        className="w-full text-white rounded-full bg-emerald-600 hover:bg-emerald-500 text-lg font-bold tracking-tight"
         onClick={() => {
           setSuccess(false);
           startTransition(async () => {
