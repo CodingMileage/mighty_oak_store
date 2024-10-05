@@ -143,7 +143,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               <StarRating value={product.rating} />
               {formatPrice(product.price)}
             </CardTitle>
-            <CardDescription className="font-bold text-xl text-center text-gray-600">
+            <CardDescription className="font-bold text-xl text-center align-middle text-gray-600">
               {product.name}
             </CardDescription>
           </CardHeader>

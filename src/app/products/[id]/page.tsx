@@ -45,25 +45,31 @@ export default async function ProductPage({
   }
 
   return (
-    <div className="container mx-auto flex flex-col lg:flex-row gap-4 lg:items-center">
-      <Image
-        src={product.imageUrl || "/placeholder.jpg"}
-        width={200}
-        height={200}
-        alt={product.name || "Product Image"}
-        priority={true}
-        className="rounded"
-      />
-      <div>
-        <h2 className="text-5xl font-bold">{product.name}</h2>
-        <PriceTag price={product.price} className="mt-4" />
-        <p className="py-6">{product.description}</p>
-        <AddToCart
-          productId={product.id}
-          incrementProductQuantity={incrementProductQuantity}
+    <>
+      <div className="container mx-auto flex flex-col justify-around lg:flex-row gap-4 lg:items-center">
+        <Image
+          src={product.imageUrl || "/placeholder.jpg"}
+          width={500}
+          height={500}
+          alt={product.name || "Product Image"}
+          priority={true}
         />
-        {/* <ConfettiButtonDemo /> */}
+        <div>
+          <h2 className="text-5xl font-bold">{product.name}</h2>
+          <PriceTag price={product.price} className="mt-4" />
+          <p className="py-6">{product.description}</p>
+          <AddToCart
+            productId={product.id}
+            incrementProductQuantity={incrementProductQuantity}
+          />
+          {/* <ConfettiButtonDemo /> */}
+        </div>
       </div>
-    </div>
+      <div className="m-12">
+        <h1 className="text-center font-bold text-4xl">
+          Check out these similar styles
+        </h1>
+      </div>
+    </>
   );
 }
