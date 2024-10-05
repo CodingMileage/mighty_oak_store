@@ -17,7 +17,7 @@ model Product {
   size        String?
   color       String
   type        String
-  rating      Float
+  rating      Float       @default(0)
   comingSoon  Boolean     @default(false)
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt

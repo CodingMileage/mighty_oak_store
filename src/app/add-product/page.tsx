@@ -9,7 +9,7 @@ export const metadata = {
   title: "Add Product",
 };
 
-async function uploadImage(file) {
+async function uploadImage(file: File) {
   const uploadsDir = path.join(process.cwd(), "public/products");
 
   // Ensure the directory exists
@@ -27,7 +27,7 @@ async function uploadImage(file) {
   readable.push(Buffer.from(buffer));
   readable.push(null); // Signal the end of the stream
 
-  // Write the file to the public/images directory
+  // Write the file to the public/products directory
   const writeStream = fs.createWriteStream(filePath);
   readable.pipe(writeStream);
 
@@ -45,17 +45,33 @@ async function addProduct(formData: FormData) {
   const price = Number(formData.get("price") || 0);
   const quantity = Number(formData.get("quantity") || 0);
   const imageFile = formData.get("imageUrl") as File;
-  const comingSoon = formData.get("comingSoon") === "true"; // Convert to boolean
+  const comingSoon = formData.get("comingSoon") === "true";
+  const size = formData.get("size")?.toString();
+  const color = formData.get("color")?.toString();
+  const type = formData.get("type")?.toString();
+  const rating = Number(formData.get("rating") || 0);
 
   if (!name || !description || !imageFile || !price) {
-    throw new Error("Missing requirements");
+    throw new Error("Missing required fields");
   }
 
-  // Upload the image and get the local URL
+  // Upload the image and get the URL
   const imageUrl = await uploadImage(imageFile);
 
+  // Save product in database
   await prisma.product.create({
-    data: { name, description, imageUrl, price, quantity, comingSoon },
+    data: {
+      name,
+      description,
+      imageUrl,
+      price,
+      quantity,
+      comingSoon,
+      size,
+      color,
+      type,
+      rating,
+    },
   });
 
   redirect("/");
@@ -93,6 +109,40 @@ export default function AddProductPage() {
           type="number"
           className="bg-white mb-3 w-full input input-bordered"
         />
+
+        {/* Size */}
+        <input
+          name="size"
+          placeholder="Size"
+          type="text"
+          className="bg-white mb-3 w-full input input-bordered"
+        />
+
+        {/* Color */}
+        <input
+          name="color"
+          placeholder="Color"
+          type="text"
+          className="bg-white mb-3 w-full input input-bordered"
+        />
+
+        {/* Type */}
+        <input
+          name="type"
+          placeholder="Type"
+          type="text"
+          className="bg-white mb-3 w-full input input-bordered"
+        />
+
+        {/* Rating */}
+        {/* <input
+          name="rating"
+          placeholder="Rating (out of 5)"
+          type="number"
+          step="0.1"
+          max={5}
+          className="bg-white mb-3 w-full input input-bordered"
+        /> */}
         <input
           required
           name="imageUrl"
@@ -100,6 +150,8 @@ export default function AddProductPage() {
           type="file"
           className="bg-white mb-3 w-full"
         />
+
+        {/* Coming Soon */}
         <div className="mb-3">
           <label className="block font-semibold mb-2">
             Is this product coming soon?
@@ -128,6 +180,7 @@ export default function AddProductPage() {
             <label htmlFor="comingSoonFalse">No</label>
           </div>
         </div>
+
         <FormSubmitButton className="btn-block">Add Product</FormSubmitButton>
       </form>
     </div>
