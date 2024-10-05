@@ -25,16 +25,10 @@ export default async function Navbar() {
     <div className="bg-white">
       <div className="navbar max-w-7xl mx-auto flex justify-between items-center py-2">
         {/* Left: Links (for example, Home, Shop, etc.) */}
-        <div className="flex items-center gap-4">
-          <Link href="/" className="text-lg">
-            Home
-          </Link>
-          <Link href="/shop" className="text-lg">
-            Shop
-          </Link>
-          <Link href="/about" className="text-lg">
-            About
-          </Link>
+        <div className="flex items-center gap-4 font-bold text-lg">
+          <Link href="/">Home</Link>
+          <Link href="/shop">Shop</Link>
+          <Link href="/about">About</Link>
         </div>
 
         {/* Center: Logo */}
