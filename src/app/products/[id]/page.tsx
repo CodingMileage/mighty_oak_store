@@ -46,7 +46,7 @@ export default async function ProductPage({
 
   return (
     <>
-      <div className="container mx-auto flex flex-col justify-around lg:flex-row gap-4 lg:items-center">
+      <div className="container mx-auto flex flex-col lg:justify-around lg:flex-row gap-4 items-center">
         <Image
           src={product.imageUrl || "/placeholder.jpg"}
           width={500}
@@ -57,6 +57,9 @@ export default async function ProductPage({
         <div>
           <h2 className="text-5xl font-bold">{product.name}</h2>
           <PriceTag price={product.price} className="mt-4" />
+          <p>{product.quantity} In Stock</p>
+          <p>{product.size} Months</p>
+          <p>{product.type}</p>
           <p className="py-6">{product.description}</p>
           <AddToCart
             productId={product.id}
