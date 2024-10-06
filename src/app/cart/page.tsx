@@ -16,6 +16,7 @@ export const metadata = {
 
 export default async function CartPage() {
   const cart = await getCart();
+  const session = await getServerSession(authOptions);
 
   return (
     <div>
@@ -31,12 +32,13 @@ export default async function CartPage() {
         <p className="mb-3 font-bold">
           Subtotal: {formatPrice(cart?.subtotal || 0)}
         </p>
-        {/* Pass items to CheckoutButton */}
-        <Link href={`cart/${cart?.id}/purchase`}>
-          {/* <button>Checkout</button> */}
-          <Button>Checkout</Button>
-          {/* <CheckoutButton items={cart?.items} /> */}
-        </Link>
+        {session ? ( // Check if the user is logged in
+          <Link href={`cart/${cart?.id}/purchase`}>
+            <Button>Checkout</Button>
+          </Link>
+        ) : (
+          <p>Please log in to proceed to checkout.</p> // Message for logged-out users
+        )}
       </div>
     </div>
   );

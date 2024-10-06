@@ -45,49 +45,20 @@ export function BabyCarousel() {
       onMouseLeave={plugin.current.play}
     >
       <CarouselContent className="">
+        <CarouselItem>
+          <img
+            src="/babyModel/img_6013.jpg"
+            alt=""
+            className="object-cover h-full w-full rounded-md saturate-[1.25]"
+          />
+        </CarouselItem>
         <CarouselItem className="">
           <img
             src="/babyModel/img_6315.jpg"
             alt=""
             className="object-cover h-full rounded-md saturate-[1.25]"
           />
-          {/* <div
-              style={{ position: "relative", width: "600px", height: "700px" }}
-            >
-              <Image
-                src="/babyModel/img_6315.jpg"
-                alt="logo"
-                layout="fill"
-                objectFit="fill"
-              />
-            </div> */}
         </CarouselItem>
-
-        {/* <CarouselItem className="">
-            <div
-              style={{ position: "relative", width: "600px", height: "700px" }}
-            >
-              <Image
-                src="/babyModel/img_6314.jpeg"
-                alt="logo"
-                layout="fill"
-                objectFit="fill"
-              />
-            </div>
-          </CarouselItem>
-  
-          <CarouselItem className="">
-            <div
-              style={{ position: "relative", width: "600px", height: "700px" }}
-            >
-              <Image
-                src="/babyModel/img_6016.jpg"
-                alt="logo"
-                layout="fill"
-                objectFit="fill"
-              />
-            </div>
-          </CarouselItem> */}
 
         <CarouselItem className="">
           <img
@@ -96,20 +67,14 @@ export function BabyCarousel() {
             className="object-cover h-full w-full rounded-md saturate-[1.25]"
           />
         </CarouselItem>
-        <CarouselItem>
+        {/* <CarouselItem>
           <img
             src="/babyModel/img_6016.jpg"
             alt=""
             className="object-cover h-full w-full rounded-md saturate-[1.25]"
           />
-        </CarouselItem>
-        <CarouselItem>
-          <img
-            src="/babyModel/img_6013.jpg"
-            alt=""
-            className="object-cover h-full w-full rounded-md saturate-[1.25]"
-          />
-        </CarouselItem>
+        </CarouselItem> */}
+
         <CarouselItem>
           <img
             src="/babyModel/img_6054.jpeg"

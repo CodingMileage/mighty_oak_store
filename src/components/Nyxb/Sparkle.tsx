@@ -11,3 +11,21 @@ export async function NewestSparkle() {
 export async function SoonSparkle() {
   return <SparklesText text="Coming Soon" />;
 }
+
+export async function TrendingSparkle() {
+  return (
+    <SparklesText
+      text="Trending Products"
+      // colors={{ first: "#FE8FB5", second: "#03fc77" }}
+    />
+  );
+}
+
+export async function SimilarSparkle() {
+  return (
+    <SparklesText
+      text="Similar Products"
+      // colors={{ first: "#FE8FB5", second: "#03fc77" }}
+    />
+  );
+}

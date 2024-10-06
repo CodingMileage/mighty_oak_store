@@ -4,6 +4,7 @@ import { Container } from "@mui/material";
 import { Button } from "./ui/button";
 import { BabyCarousel } from "./BabySlider";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -17,9 +18,11 @@ export default function Hero() {
         <div className="flex flex-col justify-around w-full rounded-md max-w-xl items-center pr-4">
           <img src="/images/logo.png" alt="" />
 
-          <Button className="p-4 rounded-full font-bold bg-emerald-600 hover:bg-emerald-800">
-            Browse Our Clothes
-          </Button>
+          <Link href="/products">
+            <Button className="p-4 rounded-full font-bold bg-emerald-600 hover:bg-emerald-800">
+              Browse Our Clothes
+            </Button>
+          </Link>
         </div>
         <BabyCarousel />
       </Container>

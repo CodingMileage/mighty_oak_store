@@ -1,5 +1,8 @@
-import ProductCard from "@/components/ProductCard";
 import { prisma } from "@/lib/db/prisma";
+import Image from "next/image";
+import AddToCart from "./[id]/AddToCart";
+import { formatPrice } from "@/lib/format";
+import ProductCard from "@/components/ProductCard";
 import { Container } from "@mui/material";
 import {
   NewestSparkle,
@@ -7,15 +10,9 @@ import {
   SparklesTextDemo,
   TrendingSparkle,
 } from "@/components/Nyxb/Sparkle";
-import Hero from "@/components/Hero";
-import BasicDemo from "@/components/DataView";
-import Pay from "@/components/Stripe";
-import BasicDemoo from "@/components/Knob";
 
-export default async function Home() {
-  // Fetch products from the database
+export default async function ProductPage() {
   const products = await prisma.product.findMany({
-    take: 6,
     where: { comingSoon: false },
   });
 
@@ -56,12 +53,6 @@ export default async function Home() {
 
   return (
     <>
-      {/* Hero Section */}
-      <Hero />
-      {/* <BasicDemo initialProducts={products} /> */}
-      {/* <BasicDemoo /> */}
-
-      {/* Main Product Grid */}
       <Container maxWidth="md">
         <SparklesTextDemo />
         {renderProductGrid(products, "product-")}
