@@ -1,87 +1,39 @@
+"use client";
+
+import { addProduct } from "./add-product";
+import { useState } from "react";
 import FormSubmitButton from "@/components/FormSubmitButton";
-import { prisma } from "@/lib/db/prisma";
-import { redirect } from "next/navigation";
-import fs from "fs";
-import path from "path";
-import { Readable } from "stream";
-
-export const metadata = {
-  title: "Add Product",
-};
-
-async function uploadImage(file: File) {
-  const uploadsDir = path.join(process.cwd(), "public/products");
-
-  // Ensure the directory exists
-  if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir, { recursive: true });
-  }
-
-  // Create a unique filename
-  const fileName = file.name;
-  const filePath = path.join(uploadsDir, fileName);
-
-  // Create a readable stream from the file buffer
-  const buffer = await file.arrayBuffer(); // Get the file buffer
-  const readable = new Readable();
-  readable.push(Buffer.from(buffer));
-  readable.push(null); // Signal the end of the stream
-
-  // Write the file to the public/products directory
-  const writeStream = fs.createWriteStream(filePath);
-  readable.pipe(writeStream);
-
-  return new Promise((resolve, reject) => {
-    writeStream.on("finish", () => resolve(`/products/${fileName}`));
-    writeStream.on("error", (err) => reject(err));
-  });
-}
-
-async function addProduct(formData: FormData) {
-  "use server";
-
-  const name = formData.get("name")?.toString();
-  const description = formData.get("description")?.toString();
-  const price = Number(formData.get("price") || 0);
-  const quantity = Number(formData.get("quantity") || 0);
-  const imageFile = formData.get("imageUrl") as File;
-  const comingSoon = formData.get("comingSoon") === "true";
-  const size = formData.get("size")?.toString();
-  const color = formData.get("color")?.toString();
-  const type = formData.get("type")?.toString();
-  const rating = Number(formData.get("rating") || 0);
-
-  if (!name || !description || !imageFile || !price) {
-    throw new Error("Missing required fields");
-  }
-
-  // Upload the image and get the URL
-  const imageUrl = await uploadImage(imageFile);
-
-  // Save product in database
-  await prisma.product.create({
-    data: {
-      name,
-      description,
-      imageUrl,
-      price,
-      quantity,
-      comingSoon,
-      size,
-      color,
-      type,
-      rating,
-    },
-  });
-
-  redirect("/");
-}
 
 export default function AddProductPage() {
+  const [variants, setVariants] = useState([
+    { size: "", color: "", price: 0, quantity: 0 },
+  ]);
+
+  const addVariant = () => {
+    setVariants([...variants, { size: "", color: "", price: 0, quantity: 0 }]);
+  };
+
+  const updateVariant = (index, key, value) => {
+    const newVariants = [...variants];
+    newVariants[index][key] = value;
+    setVariants(newVariants);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+
+    // Add variants data as a JSON string to the form data
+    formData.append("variants", JSON.stringify(variants));
+
+    await addProduct(formData);
+  };
+
   return (
     <div>
       <h1 className="text-lg mb-3 font-bold">Add Product</h1>
-      <form action={addProduct}>
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         <input
           required
           name="name"
@@ -95,7 +47,20 @@ export default function AddProductPage() {
           placeholder="Description"
           className="bg-white textarea textarea-bordered mb-3 w-full"
         ></textarea>
+        {/* Color */}
         <input
+          name="color"
+          placeholder="Color"
+          type="text"
+          className="bg-white mb-3 w-full input input-bordered"
+        />
+        <input
+          name="type"
+          placeholder="Type"
+          type="text"
+          className="bg-white mb-3 w-full input input-bordered"
+        />
+        {/* <input
           required
           name="price"
           placeholder="Price"
@@ -108,77 +73,71 @@ export default function AddProductPage() {
           placeholder="Quantity"
           type="number"
           className="bg-white mb-3 w-full input input-bordered"
-        />
-
-        {/* Size */}
-        <input
-          name="size"
-          placeholder="Size"
-          type="text"
-          className="bg-white mb-3 w-full input input-bordered"
-        />
-
-        {/* Color */}
-        <input
-          name="color"
-          placeholder="Color"
-          type="text"
-          className="bg-white mb-3 w-full input input-bordered"
-        />
-
-        {/* Type */}
-        <input
-          name="type"
-          placeholder="Type"
-          type="text"
-          className="bg-white mb-3 w-full input input-bordered"
-        />
-
-        {/* Rating */}
-        {/* <input
-          name="rating"
-          placeholder="Rating (out of 5)"
-          type="number"
-          step="0.1"
-          max={5}
-          className="bg-white mb-3 w-full input input-bordered"
         /> */}
+
+        <div className="mb-3">
+          <label className="block font-semibold mb-2">Variants</label>
+          {variants.map((variant, index) => (
+            <div key={index} className="border p-3 mb-3">
+              <input
+                name={`variantSize-${index}`}
+                placeholder="Size"
+                type="text"
+                value={variant.size}
+                onChange={(e) => updateVariant(index, "size", e.target.value)}
+                className="bg-white mb-3 w-full input input-bordered"
+              />
+              <input
+                name={`variantPrice-${index}`}
+                placeholder="Price"
+                type="number"
+                // value={variant.price}
+                onChange={(e) =>
+                  updateVariant(index, "price", parseFloat(e.target.value))
+                }
+                className="bg-white mb-3 w-full input input-bordered"
+              />
+              <input
+                name={`variantQuantity-${index}`}
+                placeholder="Quantity"
+                type="number"
+                // value={variant.quantity}
+                onChange={(e) =>
+                  updateVariant(index, "quantity", parseInt(e.target.value))
+                }
+                className="bg-white mb-3 w-full input input-bordered"
+              />
+            </div>
+          ))}
+          <button type="button" onClick={addVariant} className="btn mb-3">
+            Add Another Variant
+          </button>
+        </div>
+
         <input
           required
           name="imageUrl"
           placeholder="Image URL"
           type="file"
+          multiple
           className="bg-white mb-3 w-full"
         />
 
-        {/* Coming Soon */}
         <div className="mb-3">
-          <label className="block font-semibold mb-2">
-            Is this product coming soon?
-          </label>
-          <div>
-            <input
-              type="radio"
-              id="comingSoonTrue"
-              name="comingSoon"
-              value="true"
-              className="mr-2"
-              required
-            />
-            <label htmlFor="comingSoonTrue" className="mr-5">
-              Yes
-            </label>
+          <label className="block font-semibold mb-2">Coming Soon?</label>
+          <input
+            type="checkbox"
+            name="comingSoon"
+            value="true"
+            className="mr-2"
+          />
+          <label>Yes</label>
+        </div>
 
-            <input
-              type="radio"
-              id="comingSoonFalse"
-              name="comingSoon"
-              value="false"
-              className="mr-2"
-              required
-            />
-            <label htmlFor="comingSoonFalse">No</label>
-          </div>
+        <div className="mb-3">
+          <label className="block font-semibold mb-2">Bundle?</label>
+          <input type="checkbox" name="bundle" value="true" className="mr-2" />
+          <label>Yes</label>
         </div>
 
         <FormSubmitButton className="btn-block">Add Product</FormSubmitButton>

@@ -5,11 +5,27 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export type CartWithProducts = Prisma.CartGetPayload<{
-  include: { items: { include: { product: true } } };
+  include: {
+    items: {
+      include: {
+        product: {
+          include: {
+            variants: true; // Include variants when fetching the product
+          };
+        };
+      };
+    };
+  };
 }>;
 
 export type CartItemWithProduct = Prisma.CartItemGetPayload<{
-  include: { product: true };
+  include: {
+    product: {
+      include: {
+        variants: true; // Include variants when fetching the product
+      };
+    };
+  };
 }>;
 
 export type ShoppingCart = CartWithProducts & {
@@ -25,17 +41,35 @@ export async function getCart(): Promise<ShoppingCart | null> {
   if (session) {
     cart = await prisma.cart.findFirst({
       where: { userId: session.user.id },
-      include: { items: { include: { product: true } } },
+      include: {
+        items: {
+          include: {
+            variant: true
+          },
+        },
+      },
     });
   } else {
     const localCartId = cookies().get("localCartId")?.value;
     cart = localCartId
       ? await prisma.cart.findUnique({
           where: { id: localCartId },
-          include: { items: { include: { product: true } } },
+          include: {
+            items: {
+              include: {
+                product: {
+                  include: {
+                    variants: true, // Include the variants for local cart
+                  },
+                },
+              },
+            },
+          },
         })
       : null;
   }
+
+  console.log("Im cart" + cart?.items)
 
   if (!cart) {
     return null;
@@ -44,10 +78,10 @@ export async function getCart(): Promise<ShoppingCart | null> {
   return {
     ...cart,
     size: cart.items.reduce((acc, item) => acc + item.quantity, 0),
-    subtotal: cart.items.reduce(
-      (acc, item) => acc + item.quantity * item.product.price,
-      0
-    ),
+    // subtotal: cart.items.reduce(
+    //   (acc, item) => acc + item.quantity * item.product.price,
+    //   0
+    // ),
   };
 }
 

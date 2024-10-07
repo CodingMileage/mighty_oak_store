@@ -11,7 +11,7 @@ import { ProgressSpinner } from "primereact/progressspinner";
 import { Container } from "@mui/material";
 
 interface CartEntryProps {
-  cartItem: CartItemWithProduct;
+  cartItem: CartItemWithProduct; // Ensure this includes variants if needed
   setProductQuantity: (productId: string, quantity: number) => Promise<void>;
 }
 
@@ -52,11 +52,13 @@ export default function CartEntry({
     });
   };
 
+  console.log("HI" + product);
+
   return (
     <Container maxWidth="md">
-      <Toast ref={toast} />
+      {/* <Toast ref={toast} />
       <div className="flex flex-wrap items-center gap-3">
-        <Link href={"/products/" + product.id} className="font-bold">
+        <Link href={"/products/" + product.variants.id} className="font-bold">
           <Image
             src={product.imageUrl}
             width={200}
@@ -95,7 +97,7 @@ export default function CartEntry({
           </div>
         </div>
       </div>
-      <div className="divider" />
+      <div className="divider" /> */}
     </Container>
   );
 }

@@ -29,3 +29,12 @@ export async function SimilarSparkle() {
     />
   );
 }
+
+export async function BundleSparkle() {
+  return (
+    <SparklesText
+      text="Bundles"
+      // colors={{ first: "#FE8FB5", second: "#03fc77" }}
+    />
+  );
+}

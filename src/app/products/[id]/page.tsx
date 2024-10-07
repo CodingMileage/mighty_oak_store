@@ -16,26 +16,33 @@ interface ProductPageProps {
 }
 
 const getProduct = cache(async (id: string) => {
-  const product = await prisma.product.findUnique({ where: { id } });
+  const product = await prisma.product.findUnique({
+    where: { id },
+    include: {
+      variants: true, // Include variants when fetching the product
+    },
+  });
+  // console.log(product);
+
   return product;
 });
 
-export async function generateMetadata({
-  params: { id },
-}: ProductPageProps): Promise<Metadata> {
-  const product = await getProduct(id);
+// export async function generateMetadata({
+//   params: { id },
+// }: ProductPageProps): Promise<Metadata> {
+//   const product = await getProduct(id);
 
-  return {
-    title: product?.name
-      ? `${product.name} - The Mighty Oak Store`
-      : "Product Not Found",
-    description:
-      product?.description || "Find the best products at The Mighty Oak Store.",
-    openGraph: {
-      images: product?.imageUrl ? [{ url: product.imageUrl }] : [],
-    },
-  };
-}
+//   return {
+//     title: product?.name
+//       ? `${product.name} - The Mighty Oak Store`
+//       : "Product Not Found",
+//     description:
+//       product?.description || "Find the best products at The Mighty Oak Store.",
+//     openGraph: {
+//       images: product?.imageUrl ? [{ url: product.imageUrl }] : [],
+//     },
+//   };
+// }
 
 export default async function ProductPage({
   params: { id },
@@ -72,7 +79,7 @@ export default async function ProductPage({
         {/* Product Image */}
         <div className="lg:w-1/2 w-full flex justify-center">
           <Image
-            src={product.imageUrl || "/placeholder.jpg"}
+            src={product.imageUrl[0] || "/placeholder.jpg"}
             width={500}
             height={500}
             alt={product.name || "Product Image"}
@@ -92,10 +99,10 @@ export default async function ProductPage({
             <>
               {/* Stock Status */}
               <p className="text-lg text-red-600">
-                {product.quantity === 0
+                {product.variants[0].quantity === 0
                   ? "Out of Stock"
-                  : product.quantity <= 2
-                  ? `Hurry! Only ${product.quantity} left in stock.`
+                  : product.variants[0].quantity <= 2
+                  ? `Hurry! Only ${product.variants[0].quantity} left in stock.`
                   : ""}
               </p>
 
@@ -115,12 +122,12 @@ export default async function ProductPage({
               {/* Price & Add to Cart */}
               <div className="mt-6">
                 <h1 className="text-3xl font-bold text-emerald-500">
-                  {formatPrice(product.price)}
+                  {formatPrice(product.variants[0].price)}
                 </h1>
 
                 <div className="mt-4">
                   <AddToCart
-                    productId={product.id}
+                    productId={product.variants[0].id}
                     incrementProductQuantity={incrementProductQuantity}
                     className="bg-emerald-500 text-white px-6 py-2 rounded-md hover:bg-emerald-600 transition ease-in-out"
                   />

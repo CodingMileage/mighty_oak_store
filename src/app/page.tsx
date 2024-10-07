@@ -1,7 +1,8 @@
-import ProductCard from "@/components/ProductCard";
+import ProductCard, { ProductBundleCard } from "@/components/ProductCard";
 import { prisma } from "@/lib/db/prisma";
 import { Container } from "@mui/material";
 import {
+  BundleSparkle,
   NewestSparkle,
   SoonSparkle,
   SparklesTextDemo,
@@ -16,30 +17,38 @@ export default async function Home() {
   // Fetch products from the database
   const products = await prisma.product.findMany({
     take: 6,
-    where: { comingSoon: false },
-  });
-
-  const newProducts = await prisma.product.findMany({
-    take: 6,
-    where: { comingSoon: false },
-    orderBy: { createdAt: "desc" },
-  });
-
-  const trendingProducts = await prisma.product.findMany({
-    take: 6,
-    where: { comingSoon: false },
-    orderBy: {
-      OrderItem: {
-        _count: "desc",
-      },
+    where: { comingSoon: false, bundle: false },
+    include: {
+      variants: true, // Include the ProductVariant relation
     },
   });
 
-  const soonProducts = await prisma.product.findMany({
-    take: 6,
-    where: { comingSoon: true },
-    orderBy: { createdAt: "desc" },
-  });
+  // const bundle = await prisma.product.findMany({
+  //   take: 6,
+  //   where: { bundle: true },
+  // });
+
+  // const newProducts = await prisma.product.findMany({
+  //   take: 6,
+  //   where: { comingSoon: false },
+  //   orderBy: { createdAt: "desc" },
+  // });
+
+  // const trendingProducts = await prisma.product.findMany({
+  //   take: 6,
+  //   where: { comingSoon: false },
+  //   orderBy: {
+  //     OrderItem: {
+  //       _count: "desc",
+  //     },
+  //   },
+  // });
+
+  // const soonProducts = await prisma.product.findMany({
+  //   take: 6,
+  //   where: { comingSoon: true },
+  //   orderBy: { createdAt: "desc" },
+  // });
 
   // Helper to render product grids
   const renderProductGrid = (products: any[], keyPrefix: string) => (
@@ -47,6 +56,18 @@ export default async function Home() {
       {products.length > 0 ? (
         products.map((product) => (
           <ProductCard product={product} key={keyPrefix + product.id} />
+        ))
+      ) : (
+        <p>No products available.</p>
+      )}
+    </div>
+  );
+
+  const renderBundleGrid = (products: any[], keyPrefix: string) => (
+    <div className="my-4 grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      {products.length > 0 ? (
+        products.map((product) => (
+          <ProductBundleCard product={product} key={keyPrefix + product.id} />
         ))
       ) : (
         <p>No products available.</p>
@@ -66,28 +87,33 @@ export default async function Home() {
         <SparklesTextDemo />
         {renderProductGrid(products, "product-")}
       </Container>
+      {/* 
+      <Container maxWidth="md">
+        <BundleSparkle />
+        {renderBundleGrid(bundle, "product-")}
+      </Container>
 
       <div className="bg-emerald-400 rounded">
         <Container maxWidth="md" className="p-4">
           <TrendingSparkle />
           {renderProductGrid(trendingProducts, "trendingProduct-")}
         </Container>
-      </div>
+      </div> */}
 
       {/* Newest Products Section */}
 
-      <Container maxWidth="md" className="p-4">
+      {/* <Container maxWidth="md" className="p-4">
         <NewestSparkle />
         {renderProductGrid(newProducts, "newProduct-")}
-      </Container>
+      </Container> */}
 
       {/* Coming Soon Products Section */}
-      <div className="bg-emerald-400 rounded">
+      {/* <div className="bg-emerald-400 rounded">
         <Container maxWidth="md" className="p-4">
           <SoonSparkle />
           {renderProductGrid(soonProducts, "soonProduct-")}
         </Container>
-      </div>
+      </div> */}
     </>
   );
 }
