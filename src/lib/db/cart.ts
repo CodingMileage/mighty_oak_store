@@ -8,14 +8,10 @@ export type CartWithProducts = Prisma.CartGetPayload<{
   include: {
     items: {
       include: {
-        product: {
-          include: {
-            variants: true; // Include variants when fetching the product
-          };
-        };
-      };
-    };
-  };
+        variant: true
+      },
+    },
+  },
 }>;
 
 export type CartItemWithProduct = Prisma.CartItemGetPayload<{
@@ -69,7 +65,9 @@ export async function getCart(): Promise<ShoppingCart | null> {
       : null;
   }
 
-  console.log("Im cart" + cart?.items)
+  console.log("Im cart" + cart?.items.map((item) => (
+    item
+  )))
 
   if (!cart) {
     return null;

@@ -35,8 +35,8 @@ model ProductVariant {
   product   Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
   price     Int // Price specific to this variant
   quantity  Int // Stock specific to this variant
-  size      String? // Size for this variant (optional)
-  color     String? // Color for this variant (optional)
+  size      String // Size for this variant (optional)
+  color     String // Color for this variant (optional)
   imageUrl  String[] // Specific images for this variant
   CartItem  CartItem[]
   OrderItem OrderItem[]

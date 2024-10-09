@@ -15,7 +15,7 @@ async function uploadImages(files: FileList) {
   }
 
   const uploadPromises = Array.from(files).map(async (file) => {
-    const fileName = `${Date.now()}-${file.name}`;
+    const fileName = `${file.name}`;
     const filePath = path.join(uploadsDir, fileName);
 
     const buffer = await file.arrayBuffer();
@@ -81,11 +81,11 @@ export async function addProduct(formData: FormData) {
         price: variant.price,
         quantity: variant.quantity,
         size: variant.size,
-        color: variant.color,
-        imageUrl: variant.imageUrl,
+        color: product.color,
+        imageUrl: product.imageUrl,
       })),
     });
   }
 
-  redirect("/products");
+  redirect("/");
 }
