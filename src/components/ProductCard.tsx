@@ -60,7 +60,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             <CardHeader className="p-4">
               <CardTitle className="flex flex-col items-center  sm:flex-row justify-between text-lg font-semibold mb-2">
                 <StarRating value={product.rating} />
-                {formatPrice(product.variants[0].price)}
+                {/* {formatPrice(product.variants[0].price)} */}
               </CardTitle>
               <CardDescription className="font-bold text-xl text-center align-middle text-gray-600">
                 {product.name}
