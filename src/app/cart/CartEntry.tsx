@@ -22,6 +22,9 @@ export default function CartEntry({
   const [isPending, startTransition] = useTransition();
   const quantityOptions: JSX.Element[] = [];
   const toast = useRef<Toast>(null);
+  const variant = product.variants;
+
+  console.log("VAr" + variant);
 
   for (let i = 1; i <= 99; i++) {
     quantityOptions.push(
@@ -52,15 +55,15 @@ export default function CartEntry({
     });
   };
 
-  console.log("HI" + product);
+  // console.log("HI" + product);
 
   return (
     <Container maxWidth="md">
-      {/* <Toast ref={toast} />
+      <Toast ref={toast} />
       <div className="flex flex-wrap items-center gap-3">
         <Link href={"/products/" + product.variants.id} className="font-bold">
           <Image
-            src={product.imageUrl}
+            src={product.imageUrl[0]}
             width={200}
             height={200}
             alt={product.name}
@@ -97,7 +100,7 @@ export default function CartEntry({
           </div>
         </div>
       </div>
-      <div className="divider" /> */}
+      <div className="divider" />
     </Container>
   );
 }

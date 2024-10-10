@@ -14,7 +14,7 @@ model Product {
   name        String
   price       Int
   quantity    Int
-  size        String?
+  // size        String?
   color       String
   type        String
   // bundle      Boolean          @default(false)

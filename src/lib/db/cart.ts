@@ -5,11 +5,11 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export type CartWithProducts = Prisma.CartGetPayload<{
-  include: { items: { include: { product: {include: {variants: true}} } } };
+  include: { items: { include: { product: { include: { variants: true } } } } };
 }>;
 
 export type CartItemWithProduct = Prisma.CartItemGetPayload<{
-  include: { product: true };
+  include: { product: { include: { variants: true } } };
 }>;
 
 export type ShoppingCart = CartWithProducts & {
@@ -25,24 +25,23 @@ export async function getCart(): Promise<ShoppingCart | null> {
   if (session) {
     cart = await prisma.cart.findFirst({
       where: { userId: session.user.id },
-      include: { items: { include: { product: {include: {variants: true}} } } }
-
-
+      include: {
+        items: { include: { product: { include: { variants: true } } } },
+      },
     });
   } else {
     const localCartId = cookies().get("localCartId")?.value;
     cart = localCartId
       ? await prisma.cart.findUnique({
           where: { id: localCartId },
-          include: { items: { include: { product: {include: {variants: true}} } } }
-
+          include: {
+            items: { include: { product: { include: { variants: true } } } },
+          },
         })
       : null;
   }
 
-  console.log(cart?.items.map((item) => (
-    item
-  )))
+  console.log(cart?.items.map((item) => item));
 
   if (!cart) {
     return null;
@@ -51,10 +50,14 @@ export async function getCart(): Promise<ShoppingCart | null> {
   return {
     ...cart,
     size: cart.items.reduce((acc, item) => acc + item.quantity, 0),
-    subtotal: cart.items.reduce(
-      (acc, item) => acc + item.quantity * item.product.price,
-      0
-    ),
+    subtotal: cart.items.reduce((acc, item) => {
+      // Determine if a variant price is available, else fallback to the base product price
+      const variantPrice = item.product.variants.length
+        ? item.product.variants[0].price // You can enhance this logic if you need a specific variant
+        : item.product.price;
+
+      return acc + item.quantity * variantPrice;
+    }, 0),
   };
 }
 

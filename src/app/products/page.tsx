@@ -14,12 +14,18 @@ import {
 export default async function ProductPage() {
   const products = await prisma.product.findMany({
     where: { comingSoon: false },
+    include: {
+      variants: true, // Include the ProductVariant relation
+    },
   });
 
   const newProducts = await prisma.product.findMany({
     take: 6,
     where: { comingSoon: false },
     orderBy: { createdAt: "desc" },
+    include: {
+      variants: true, // Include the ProductVariant relation
+    },
   });
 
   const trendingProducts = await prisma.product.findMany({
@@ -30,12 +36,18 @@ export default async function ProductPage() {
         _count: "desc",
       },
     },
+    include: {
+      variants: true, // Include the ProductVariant relation
+    },
   });
 
   const soonProducts = await prisma.product.findMany({
     take: 6,
     where: { comingSoon: true },
     orderBy: { createdAt: "desc" },
+    include: {
+      variants: true, // Include the ProductVariant relation
+    },
   });
 
   // Helper to render product grids

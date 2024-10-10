@@ -28,27 +28,27 @@ export default async function Home() {
   //   where: { bundle: true },
   // });
 
-  // const newProducts = await prisma.product.findMany({
-  //   take: 6,
-  //   where: { comingSoon: false },
-  //   orderBy: { createdAt: "desc" },
-  // });
+  const newProducts = await prisma.product.findMany({
+    take: 6,
+    where: { comingSoon: false },
+    orderBy: { createdAt: "desc" },
+  });
 
-  // const trendingProducts = await prisma.product.findMany({
-  //   take: 6,
-  //   where: { comingSoon: false },
-  //   orderBy: {
-  //     OrderItem: {
-  //       _count: "desc",
-  //     },
-  //   },
-  // });
+  const trendingProducts = await prisma.product.findMany({
+    take: 6,
+    where: { comingSoon: false },
+    orderBy: {
+      OrderItem: {
+        _count: "desc",
+      },
+    },
+  });
 
-  // const soonProducts = await prisma.product.findMany({
-  //   take: 6,
-  //   where: { comingSoon: true },
-  //   orderBy: { createdAt: "desc" },
-  // });
+  const soonProducts = await prisma.product.findMany({
+    take: 6,
+    where: { comingSoon: true },
+    orderBy: { createdAt: "desc" },
+  });
 
   // Helper to render product grids
   const renderProductGrid = (products: any[], keyPrefix: string) => (

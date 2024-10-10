@@ -44,7 +44,7 @@ const stripePromise = loadStripe(
 );
 
 export function CheckoutForm({ cart, clientSecret }: CheckoutFormProps) {
-  console.log("Cart: ", cart); // Debugging to check cart structure
+  // console.log("Cart: ", cart); // Debugging to check cart structure
 
   return (
     <div className="max-w-5xl w-full mx-auto space-y-8">

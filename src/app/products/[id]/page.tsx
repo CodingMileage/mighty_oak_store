@@ -61,6 +61,9 @@ export default async function ProductPage({
         _count: "desc",
       },
     },
+    include: {
+      variants: true, // Include the ProductVariant relation
+    },
   });
 
   // Fetch similar products based on the current product's type
@@ -71,6 +74,9 @@ export default async function ProductPage({
       id: { not: product.id }, // Exclude the current product
     },
     orderBy: { id: "desc" },
+    include: {
+      variants: true, // Include the ProductVariant relation
+    },
   });
 
   return (
