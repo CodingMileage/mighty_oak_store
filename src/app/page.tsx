@@ -17,7 +17,7 @@ export default async function Home() {
   // Fetch products from the database
   const products = await prisma.product.findMany({
     take: 6,
-    where: { comingSoon: false, bundle: false },
+    where: { comingSoon: false },
     include: {
       variants: true, // Include the ProductVariant relation
     },

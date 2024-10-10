@@ -98,13 +98,13 @@ export default async function ProductPage({
           ) : (
             <>
               {/* Stock Status */}
-              <p className="text-lg text-red-600">
+              {/* <p className="text-lg text-red-600">
                 {product.variants[0].quantity === 0
                   ? "Out of Stock"
                   : product.variants[0].quantity <= 2
                   ? `Hurry! Only ${product.variants[0].quantity} left in stock.`
                   : ""}
-              </p>
+              </p> */}
 
               {/* Product Size */}
               <p className="text-base text-gray-700">
@@ -121,13 +121,13 @@ export default async function ProductPage({
 
               {/* Price & Add to Cart */}
               <div className="mt-6">
-                <h1 className="text-3xl font-bold text-emerald-500">
+                {/* <h1 className="text-3xl font-bold text-emerald-500">
                   {formatPrice(product.variants[0].price)}
-                </h1>
+                </h1> */}
 
                 <div className="mt-4">
                   <AddToCart
-                    productId={product.variants[0].id}
+                    productId={product.id}
                     incrementProductQuantity={incrementProductQuantity}
                     className="bg-emerald-500 text-white px-6 py-2 rounded-md hover:bg-emerald-600 transition ease-in-out"
                   />

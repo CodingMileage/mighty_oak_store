@@ -17,7 +17,7 @@ model Product {
   size        String?
   color       String
   type        String
-  bundle      Boolean          @default(false)
+  // bundle      Boolean          @default(false)
   rating      Float            @default(0)
   comingSoon  Boolean          @default(false)
   createdAt   DateTime         @default(now())

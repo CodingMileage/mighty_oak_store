@@ -43,7 +43,7 @@ export async function addProduct(formData: FormData) {
   const quantity = Number(formData.get("quantity") || 0);
   const imageFiles = formData.getAll("imageUrl") as FileList;
   const comingSoon = formData.get("comingSoon") === "true";
-  const bundle = formData.get("bundle") === "true";
+//   const bundle = formData.get("bundle") === "true";
   const color = formData.get("color")?.toString();
   const type = formData.get("type")?.toString();
   const rating = Number(formData.get("rating") || 0);
@@ -66,7 +66,7 @@ export async function addProduct(formData: FormData) {
       price,
       quantity,
       comingSoon,
-      bundle,
+    //   bundle,
       color,
       type,
       rating,
