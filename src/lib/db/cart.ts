@@ -41,7 +41,7 @@ export async function getCart(): Promise<ShoppingCart | null> {
       : null;
   }
 
-  console.log(cart?.items.map((item) => item));
+  // console.log(cart?.items.map((item) => item));
 
   if (!cart) {
     return null;

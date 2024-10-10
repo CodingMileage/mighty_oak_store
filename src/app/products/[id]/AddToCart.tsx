@@ -13,6 +13,8 @@ export default function AddToCart({ productId }: AddToCartProps) {
   const [isPending, startTransition] = useTransition();
   const [success, setSuccess] = useState(false);
 
+  console.log(productId);
+
   return (
     <div className="flex w-full items-center gap-2">
       <Button

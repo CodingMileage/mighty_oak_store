@@ -1,11 +1,5 @@
-import PriceTag from "@/components/PriceTag";
 import { prisma } from "@/lib/db/prisma";
-import { Metadata } from "next";
-import Image from "next/image";
-import { cache } from "react";
-import AddToCart from "./AddToCart";
-import { incrementProductQuantity } from "./actions";
-import { formatPrice } from "@/lib/format";
+import ProductDetails from "./ProductDetails";
 import CarouselItem from "@/components/CarouselItem";
 import { SimilarSparkle, TrendingSparkle } from "@/components/Nyxb/Sparkle";
 
@@ -15,34 +9,16 @@ interface ProductPageProps {
   };
 }
 
-const getProduct = cache(async (id: string) => {
+const getProduct = async (id: string) => {
   const product = await prisma.product.findUnique({
     where: { id },
     include: {
       variants: true, // Include variants when fetching the product
     },
   });
-  // console.log(product);
 
   return product;
-});
-
-// export async function generateMetadata({
-//   params: { id },
-// }: ProductPageProps): Promise<Metadata> {
-//   const product = await getProduct(id);
-
-//   return {
-//     title: product?.name
-//       ? `${product.name} - The Mighty Oak Store`
-//       : "Product Not Found",
-//     description:
-//       product?.description || "Find the best products at The Mighty Oak Store.",
-//     openGraph: {
-//       images: product?.imageUrl ? [{ url: product.imageUrl }] : [],
-//     },
-//   };
-// }
+};
 
 export default async function ProductPage({
   params: { id },
@@ -62,7 +38,7 @@ export default async function ProductPage({
       },
     },
     include: {
-      variants: true, // Include the ProductVariant relation
+      variants: true,
     },
   });
 
@@ -75,83 +51,20 @@ export default async function ProductPage({
     },
     orderBy: { id: "desc" },
     include: {
-      variants: true, // Include the ProductVariant relation
+      variants: true,
     },
   });
 
   return (
     <>
-      <div className="container mx-auto flex flex-col lg:flex-row lg:justify-between gap-8 items-center py-8 px-4">
-        {/* Product Image */}
-        <div className="lg:w-1/2 w-full flex justify-center">
-          <Image
-            src={product.imageUrl[0] || "/placeholder.jpg"}
-            width={500}
-            height={500}
-            alt={product.name || "Product Image"}
-            priority={true}
-          />
-        </div>
-
-        {/* Product Details */}
-        <div className="lg:w-1/2 w-full space-y-4">
-          {/* Product Name */}
-          <h2 className="text-4xl font-bold text-gray-900">{product.name}</h2>
-
-          {/* Availability */}
-          {product.comingSoon ? (
-            <p className="text-lg text-red-500 font-semibold">Coming Soon!</p>
-          ) : (
-            <>
-              {/* Stock Status */}
-              {/* <p className="text-lg text-red-600">
-                {product.variants[0].quantity === 0
-                  ? "Out of Stock"
-                  : product.variants[0].quantity <= 2
-                  ? `Hurry! Only ${product.variants[0].quantity} left in stock.`
-                  : ""}
-              </p> */}
-
-              {/* Product Size */}
-              <p className="text-base text-gray-700">
-                {product.size && `Size: ${product.size}`}
-              </p>
-
-              {/* Product Type */}
-              <p className="text-xl font-medium text-gray-500">
-                Type:{" "}
-                <span className="font-semibold text-gray-900">
-                  {product.type}
-                </span>
-              </p>
-
-              {/* Price & Add to Cart */}
-              <div className="mt-6">
-                {/* <h1 className="text-3xl font-bold text-emerald-500">
-                  {formatPrice(product.variants[0].price)}
-                </h1> */}
-
-                <div className="mt-4">
-                  <AddToCart
-                    productId={product.id}
-                    incrementProductQuantity={incrementProductQuantity}
-                    className="bg-emerald-500 text-white px-6 py-2 rounded-md hover:bg-emerald-600 transition ease-in-out"
-                  />
-                </div>
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-
+      <ProductDetails product={product} />{" "}
+      {/* Render the client-side component */}
       <div className="m-12">
         <h1 className="m-6">
           <SimilarSparkle />
         </h1>
-        <CarouselItem initialProducts={similarProducts} />{" "}
-        {/* Updated to show similar products */}
+        <CarouselItem initialProducts={similarProducts} />
       </div>
-
       <div className="m-12">
         <h1 className="m-6">
           <TrendingSparkle />
