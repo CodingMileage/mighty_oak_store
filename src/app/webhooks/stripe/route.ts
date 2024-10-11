@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
   // Handle successful payment events
   if (event.type === "payment_intent.succeeded") {
     const paymentIntent = event.data.object as Stripe.PaymentIntent;
-
+    const address = paymentIntent.shipping?.address
     const email = paymentIntent.metadata?.email;
     const userId = paymentIntent.metadata?.userId;
 
@@ -30,6 +30,12 @@ export async function POST(req: NextRequest) {
       console.error("Missing email or userId in payment metadata");
       return new NextResponse("Bad Request", { status: 400 });
     }
+
+    const userFields = {
+      address: address
+        ? `${address.line1}, ${address.city}, ${address.state}, ${address.postal_code}, ${address.country}`
+        : "",
+    };
 
     // Fetch the user by userId
     const user = await prisma.user.findUnique({ where: { id: userId } });
@@ -63,6 +69,7 @@ export async function POST(req: NextRequest) {
         userId: user.id,
         totalAmount: paymentIntent.amount,
         status: "completed",
+        address: userFields.address,
         items: {
           create: cart.items.map((item) => ({
             productId: item.productId,
