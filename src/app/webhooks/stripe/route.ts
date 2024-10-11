@@ -1,8 +1,11 @@
 import { prisma } from "@/lib/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
+import { Resend } from "resend";
+
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
+const resend = new Resend(process.env.RESEND_API_KEY as string);
 
 export async function POST(req: NextRequest) {
   let event;
@@ -90,6 +93,28 @@ export async function POST(req: NextRequest) {
 
     // Clear the cart after the order is processed
     await prisma.cart.delete({ where: { userId: user.id } });
+
+    
+    const htmlContent = `
+    <h1 style="font-weight: bold;">Thank you for shopping with us!</h1>
+    <img src=${"/images/logo.png"} alt="Logo" />
+    <div>
+      <h1>Here are your order details:</h1>
+      <h2>Shipping information</h2>
+      <p>
+        ${address?.line1}, ${address?.city}, ${address?.state}
+      </p>
+    </div>
+    <p>We can't wait to see you again!</p>
+  `;
+  
+  await resend.emails.send({
+    from: `Support <${process.env.SENDER_EMAIL}>`,
+    to: [email],
+    subject: "The Mighty Oak Tree Order Confirmation",
+    html: htmlContent,
+  });
+  
 
     console.log("Order processed successfully for:", email);
     return new NextResponse("Order created", { status: 200 });
