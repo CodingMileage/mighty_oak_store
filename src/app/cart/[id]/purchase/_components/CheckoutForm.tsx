@@ -31,6 +31,11 @@ type CheckoutFormProps = {
         name: string;
         imageUrl: string;
         price: number;
+        variant: Array<{
+          id: number;
+          price: number;
+          quantity: number;
+        }>;
       };
       quantity: number;
     }>;
@@ -44,7 +49,10 @@ const stripePromise = loadStripe(
 );
 
 export function CheckoutForm({ cart, clientSecret }: CheckoutFormProps) {
-  // console.log("Cart: ", cart); // Debugging to check cart structure
+  console.log(
+    "Cart: ",
+    cart.items.map((item) => item)
+  );
 
   return (
     <div className="max-w-5xl w-full mx-auto space-y-8">
@@ -53,12 +61,13 @@ export function CheckoutForm({ cart, clientSecret }: CheckoutFormProps) {
         {cart.items.map((cartItem, index) => (
           <div className="p-3" key={index}>
             <Image
-              src={cartItem.product.imageUrl}
+              src={cartItem.product.imageUrl[0]}
               alt="Product"
               width={50}
               height={50}
             />
             <h3>{cartItem.product.name}</h3>
+            {/* <h3>{cartItem.product}</h3> */}
             <h3>Quantity: {cartItem.quantity}</h3>
             <h3>
               Price: {formatPrice(cartItem.product.price * cartItem.quantity)}

@@ -26,7 +26,15 @@ export async function getCart(): Promise<ShoppingCart | null> {
     cart = await prisma.cart.findFirst({
       where: { userId: session.user.id },
       include: {
-        items: { include: { product: { include: { variants: true } } } },
+        items: {
+          include: {
+            product: {
+              include: {
+                variants: true,
+              },
+            },
+          },
+        },
       },
     });
   } else {
@@ -35,13 +43,19 @@ export async function getCart(): Promise<ShoppingCart | null> {
       ? await prisma.cart.findUnique({
           where: { id: localCartId },
           include: {
-            items: { include: { product: { include: { variants: true } } } },
+            items: {
+              include: {
+                product: {
+                  include: {
+                    variants: true,
+                  },
+                },
+              },
+            },
           },
         })
       : null;
   }
-
-  // console.log(cart?.items.map((item) => item));
 
   if (!cart) {
     return null;
@@ -51,10 +65,13 @@ export async function getCart(): Promise<ShoppingCart | null> {
     ...cart,
     size: cart.items.reduce((acc, item) => acc + item.quantity, 0),
     subtotal: cart.items.reduce((acc, item) => {
-      // Determine if a variant price is available, else fallback to the base product price
-      const variantPrice = item.product.variants.length
-        ? item.product.variants[0].price // You can enhance this logic if you need a specific variant
-        : item.product.price;
+      // Find the selected variant price based on the variantId in the cart item
+      const variant = item.product.variants.find(
+        (variant) => variant.id === item.variantId
+      );
+
+      // Use the variant price if available, else fallback to the base product price
+      const variantPrice = variant ? variant.price : item.product.price;
 
       return acc + item.quantity * variantPrice;
     }, 0),

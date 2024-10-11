@@ -16,16 +16,16 @@ interface CartEntryProps {
 }
 
 export default function CartEntry({
-  cartItem: { product, quantity },
+  cartItem, // Correctly destructure cartItem
   setProductQuantity,
 }: CartEntryProps) {
+  const { product, quantity } = cartItem; // Destructure product and quantity from cartItem
   const [isPending, startTransition] = useTransition();
   const quantityOptions: JSX.Element[] = [];
   const toast = useRef<Toast>(null);
-  const variant = product.variants;
+  const variant = product.variants.find((v) => v.id === cartItem.variantId); // Ensure variantId is defined in your cart item
 
-  console.log("VAr" + variant);
-
+  // Generate quantity options
   for (let i = 1; i <= 99; i++) {
     quantityOptions.push(
       <option value={i} key={i}>
@@ -55,13 +55,13 @@ export default function CartEntry({
     });
   };
 
-  // console.log("HI" + product);
-
   return (
     <Container maxWidth="md">
       <Toast ref={toast} />
       <div className="flex flex-wrap items-center gap-3">
-        <Link href={"/products/" + product.variants.id} className="font-bold">
+        <Link href={"/products/" + variant?.id} className="font-bold">
+          {" "}
+          {/* Use variant?.id to avoid potential errors */}
           <Image
             src={product.imageUrl[0]}
             width={200}
@@ -74,11 +74,15 @@ export default function CartEntry({
           <Link href={"/products/" + product.id} className="font-bold text-4xl">
             {product.name}
           </Link>
-          <div>Price: {formatPrice(product.price)}</div>
+          <div className="font-semibold">
+            Price: {formatPrice(variant?.price || product.price)}
+          </div>{" "}
+          <div className="font-semibold">Size: {variant?.size}</div>
+          {/* Fallback to product price if variant is not found */}
           <div className="my-1 flex items-center gap-2">
             Quantity:
             <select
-              className="select w-full max-w-xs select-bordered bg-white"
+              className="select max-w-xs select-bordered bg-white"
               defaultValue={quantity}
               onChange={(e) => {
                 const newQuantity = parseInt(e.currentTarget.value);
@@ -90,7 +94,9 @@ export default function CartEntry({
             </select>
           </div>
           <div className="flex items-center gap-3">
-            SubTotal: {formatPrice(product.price * quantity)}
+            SubTotal:{" "}
+            {formatPrice((variant?.price || product.price) * quantity)}{" "}
+            {/* Use variant price for subtotal */}
             {isPending && (
               <ProgressSpinner
                 style={{ width: "25px", height: "25px" }}

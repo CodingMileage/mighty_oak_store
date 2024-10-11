@@ -72,7 +72,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
 
           <div className="mt-4">
             <AddToCart
-              productId={selectedVariant.id}
+              productId={product.id}
               variantId={selectedVariant.id} // Pass selected variant ID
               className="bg-emerald-500 text-white px-6 py-2 rounded-md hover:bg-emerald-600 transition ease-in-out"
             />

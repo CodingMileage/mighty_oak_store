@@ -26,10 +26,13 @@ export default async function Orders({ userId }: OrdersProps) {
     return <p>User not found.</p>;
   }
 
-  // Fetch orders based on user ID
+  // Fetch orders based on user ID and sort them by createdAt in descending order
   const orders = await prisma.order.findMany({
     where: { userId: user.id }, // Filter orders by userId
-    include: { items: { include: { product: true } } }, // Include items and product details
+    orderBy: { createdAt: "desc" }, // Sort by creation date, newest first
+    include: {
+      items: { include: { product: { include: { variants: true } } } },
+    }, // Include items and product details
   });
 
   return (
@@ -50,6 +53,12 @@ export default async function Orders({ userId }: OrdersProps) {
                 <span className="font-bold">Order ID:</span> {order.id}
               </h2>
             </div>
+            {/* Display order date and time */}
+            <div className="text-sm">
+              <span className="font-bold">Order Date:</span>{" "}
+              {new Date(order.createdAt).toLocaleString()}{" "}
+              {/* Format the date and time */}
+            </div>
             <ul className="ml-6">
               {order.items.map((item) => (
                 <li key={item.id} className="flex mt-2 mb-2">
@@ -64,12 +73,35 @@ export default async function Orders({ userId }: OrdersProps) {
                       />
                     </Link>
                   )}
-                  {/* Product name */}
+                  {/* Product name, variant details, and quantity */}
                   <div className="ml-4">
                     <Link href={`/products/${item.product.id}`}>
                       <h1 className="font-bold hover:opacity-45">
                         {item.product.name}
                       </h1>
+                      {/* Display the variant size, price, and quantity */}
+                      {item.variantId && (
+                        <>
+                          <h2 className="text-sm">
+                            Variant Size:{" "}
+                            {item.product.variants.find(
+                              (variant) => variant.id === item.variantId
+                            )?.size || "N/A"}
+                          </h2>
+                          <h2 className="text-sm">
+                            Variant Price:{" "}
+                            {formatPrice(
+                              item.product.variants.find(
+                                (variant) => variant.id === item.variantId
+                              )?.price || 0 // Default to 0 if no price found
+                            )}
+                          </h2>
+                          <h2 className="text-sm">
+                            Quantity: {item.quantity}{" "}
+                            {/* Render the quantity */}
+                          </h2>
+                        </>
+                      )}
                     </Link>
                   </div>
                 </li>

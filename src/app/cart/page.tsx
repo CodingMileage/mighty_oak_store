@@ -18,7 +18,7 @@ export default async function CartPage() {
   const cart = await getCart();
   const session = await getServerSession(authOptions);
 
-  // console.log(cart);
+  console.log(cart);
 
   return (
     <div>

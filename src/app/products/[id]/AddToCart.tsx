@@ -6,14 +6,16 @@ import { Button } from "@/components/ui/button";
 
 interface AddToCartProps {
   productId: string;
-  incrementProductQuantity: (productId: String) => Promise<void>;
+  variantId: string;
+  incrementProductQuantity: (
+    productId: string,
+    variantId: string
+  ) => Promise<void>;
 }
 
-export default function AddToCart({ productId }: AddToCartProps) {
+export default function AddToCart({ productId, variantId }: AddToCartProps) {
   const [isPending, startTransition] = useTransition();
   const [success, setSuccess] = useState(false);
-
-  console.log(productId);
 
   return (
     <div className="flex w-full items-center gap-2">
@@ -22,12 +24,13 @@ export default function AddToCart({ productId }: AddToCartProps) {
         onClick={() => {
           setSuccess(false);
           startTransition(async () => {
-            await incrementProductQuantity(productId);
+            await incrementProductQuantity(productId, variantId);
             setSuccess(true);
           });
         }}
+        disabled={isPending}
       >
-        Add to cart
+        {isPending ? "Adding..." : "Add to cart"}
       </Button>
       {isPending && <span className="loading loading-spinner loading-md" />}
       {!isPending && success && (
