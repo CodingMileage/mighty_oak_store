@@ -32,6 +32,9 @@ export default async function Home() {
     take: 6,
     where: { comingSoon: false },
     orderBy: { createdAt: "desc" },
+    include: {
+      variants: true, // Include the ProductVariant relation
+    },
   });
 
   const trendingProducts = await prisma.product.findMany({
@@ -42,12 +45,18 @@ export default async function Home() {
         _count: "desc",
       },
     },
+    include: {
+      variants: true, // Include the ProductVariant relation
+    },
   });
 
   const soonProducts = await prisma.product.findMany({
     take: 6,
     where: { comingSoon: true },
     orderBy: { createdAt: "desc" },
+    include: {
+      variants: true, // Include the ProductVariant relation
+    },
   });
 
   // Helper to render product grids
@@ -87,33 +96,33 @@ export default async function Home() {
         <SparklesTextDemo />
         {renderProductGrid(products, "product-")}
       </Container>
-      {/* 
-      <Container maxWidth="md">
+
+      {/* <Container maxWidth="md">
         <BundleSparkle />
         {renderBundleGrid(bundle, "product-")}
-      </Container>
+      </Container> */}
 
       <div className="bg-emerald-400 rounded">
         <Container maxWidth="md" className="p-4">
           <TrendingSparkle />
           {renderProductGrid(trendingProducts, "trendingProduct-")}
         </Container>
-      </div> */}
+      </div>
 
       {/* Newest Products Section */}
 
-      {/* <Container maxWidth="md" className="p-4">
+      <Container maxWidth="md" className="p-4">
         <NewestSparkle />
         {renderProductGrid(newProducts, "newProduct-")}
-      </Container> */}
+      </Container>
 
       {/* Coming Soon Products Section */}
-      {/* <div className="bg-emerald-400 rounded">
+      <div className="bg-emerald-400 rounded">
         <Container maxWidth="md" className="p-4">
           <SoonSparkle />
           {renderProductGrid(soonProducts, "soonProduct-")}
         </Container>
-      </div> */}
+      </div>
     </>
   );
 }
