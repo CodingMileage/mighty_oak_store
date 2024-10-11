@@ -46,6 +46,7 @@ export async function POST(req: NextRequest) {
         items: {
           include: {
             product: { include: { variants: true } },
+            variant: true
           },
         },
       },
@@ -66,10 +67,10 @@ export async function POST(req: NextRequest) {
           create: cart.items.map((item) => ({
             productId: item.productId,
             quantity: item.quantity,
-            price: item.product.variants[0].price, // Assume each item has a variant
+            price: item.variant ? item.variant?.price : item.product.price, // Assume each item has a variant
             name: item.product.name,
             imageUrl: item.product.imageUrl[0], // Store product image
-            variantId: item.product.variants[0].id, // Link the item to the variantId
+            variantId: item.variant?.id, // Link the item to the variantId
           })),
         },
       },

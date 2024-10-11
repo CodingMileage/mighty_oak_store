@@ -35,6 +35,8 @@ export default async function Orders({ userId }: OrdersProps) {
     }, // Include items and product details
   });
 
+  console.log(orders.map((item) => item.items));
+
   return (
     <Container maxWidth="lg">
       <h1 className="font-bold text-2xl">Orders for: {session.user.name}</h1>
@@ -43,25 +45,26 @@ export default async function Orders({ userId }: OrdersProps) {
       ) : (
         orders.map((order) => (
           <div key={order.id} className="border p-4 mb-4">
-            <div className="flex justify-between p-2 rounded bg-slate-400">
+            <div className="flex justify-around p-2 rounded bg-emerald-400">
               {/* Display the order information */}
               <h2 className="">
                 <span className="font-bold">Order Total:</span>{" "}
                 <span className="">{formatPrice(order.totalAmount)}</span>
               </h2>
+              {/* Display order date and time */}
+              <div className="text-sm">
+                <span className="font-bold">Order Date:</span>{" "}
+                {new Date(order.createdAt).toLocaleString()}{" "}
+                {/* Format the date and time */}
+              </div>
               <h2>
                 <span className="font-bold">Order ID:</span> {order.id}
               </h2>
             </div>
-            {/* Display order date and time */}
-            <div className="text-sm">
-              <span className="font-bold">Order Date:</span>{" "}
-              {new Date(order.createdAt).toLocaleString()}{" "}
-              {/* Format the date and time */}
-            </div>
-            <ul className="ml-6">
+
+            <ul className=" bg-slate-100 p-6">
               {order.items.map((item) => (
-                <li key={item.id} className="flex mt-2 mb-2">
+                <li key={item.id} className="flex mb-2 p-4">
                   {/* Dynamically link to each product */}
                   {item.product.imageUrl && (
                     <Link href={`/products/${item.product.id}`}>
