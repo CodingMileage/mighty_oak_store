@@ -15,6 +15,7 @@ import { Container } from "@mui/material";
 import { formatCurrency, formatPrice } from "@/lib/format";
 import AddToCart from "@/app/products/[id]/AddToCart";
 import { incrementProductQuantity } from "@/app/products/[id]/actions";
+// import { Button } from "./ui/button";
 
 import { Rating } from "primereact/rating";
 import StarRating from "./Rating";
@@ -79,6 +80,14 @@ export default function ProductCard({ product }: ProductCardProps) {
                   incrementProductQuantity={incrementProductQuantity}
                 />
               )} */}
+            {/* <Link href={"/products/" + product.id}>
+              <Button
+                className="w-full text-white rounded-full bg-emerald-600
+              hover:bg-emerald-500 text-lg font-bold tracking-tight"
+              >
+                Details
+              </Button>
+            </Link> */}
           </CardFooter>
         </Card>
       </div>
@@ -105,12 +114,12 @@ export function ProductBundleCard({ product }: ProductCardProps) {
                       layout="fill"
                       objectFit="contain"
                       alt={product.name}
-                      className="hover:scale-110 duration-500 ease-in-out"
+                      className="hover:scale-110 duration-500 ease-in-out rounded-xl"
                     />
                   </div>
                 )}
 
-                {product.imageUrl.length > 1 && (
+                {/* {product.imageUrl.length > 1 && (
                   <div className="relative w-1/2 h-full">
                     <Image
                       src={product.imageUrl[1]}
@@ -120,7 +129,7 @@ export function ProductBundleCard({ product }: ProductCardProps) {
                       className="hover:scale-110 duration-500 ease-in-out"
                     />
                   </div>
-                )}
+                )} */}
               </div>
             </div>
           </Link>

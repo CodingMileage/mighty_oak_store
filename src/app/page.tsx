@@ -10,7 +10,6 @@ import {
 } from "@/components/Nyxb/Sparkle";
 import Hero from "@/components/Hero";
 import BasicDemo from "@/components/DataView";
-import Pay from "@/components/Stripe";
 import BasicDemoo from "@/components/Knob";
 
 export default async function Home() {
@@ -23,10 +22,13 @@ export default async function Home() {
     },
   });
 
-  // const bundle = await prisma.product.findMany({
-  //   take: 6,
-  //   where: { bundle: true },
-  // });
+  const bundle = await prisma.product.findMany({
+    take: 6,
+    where: { bundle: true },
+    include: {
+      variants: true, // Include the ProductVariant relation
+    },
+  });
 
   const newProducts = await prisma.product.findMany({
     take: 6,
@@ -97,12 +99,12 @@ export default async function Home() {
         {renderProductGrid(products, "product-")}
       </Container>
 
-      {/* <Container maxWidth="md">
+      <Container maxWidth="md">
         <BundleSparkle />
-        {renderBundleGrid(bundle, "product-")}
-      </Container> */}
+        {renderProductGrid(bundle, "product-")}
+      </Container>
 
-      <div className="bg-emerald-400 rounded">
+      <div className="bg-emerald-300 rounded">
         <Container maxWidth="md" className="p-4">
           <TrendingSparkle />
           {renderProductGrid(trendingProducts, "trendingProduct-")}
@@ -117,7 +119,7 @@ export default async function Home() {
       </Container>
 
       {/* Coming Soon Products Section */}
-      <div className="bg-emerald-400 rounded">
+      <div className="bg-emerald-300 rounded">
         <Container maxWidth="md" className="p-4">
           <SoonSparkle />
           {renderProductGrid(soonProducts, "soonProduct-")}
