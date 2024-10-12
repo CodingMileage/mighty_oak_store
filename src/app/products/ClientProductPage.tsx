@@ -35,7 +35,7 @@ const extractColorsFromVariants = (products: any[]) => {
       }
     });
   });
-  return Array.from(colorsSet);
+  return Array.from(colorsSet).sort(); // Sort the colors alphabetically
 };
 
 // Helper function to extract unique item types from the product type field
@@ -46,7 +46,20 @@ const extractItemTypesFromProducts = (products: any[]) => {
       itemTypesSet.add(product.type);
     }
   });
-  return Array.from(itemTypesSet);
+  return Array.from(itemTypesSet).sort(); // Sort the item types alphabetically
+};
+
+// Helper function to extract unique sizes from product variants
+const extractSizesFromVariants = (products: any[]) => {
+  const sizesSet = new Set<string>();
+  products.forEach((product) => {
+    product.variants.forEach((variant: any) => {
+      if (variant.size) {
+        sizesSet.add(variant.size);
+      }
+    });
+  });
+  return Array.from(sizesSet).sort(); // Sort the sizes alphabetically
 };
 
 // Client-side component
@@ -58,9 +71,11 @@ export default function ClientProductPage({
 }: ClientProductPageProps) {
   const [selectedColor, setSelectedColor] = useState<string>("");
   const [selectedItemType, setSelectedItemType] = useState<string>("");
+  const [selectedSize, setSelectedSize] = useState<string>("");
 
   const availableColors = extractColorsFromVariants(products);
   const availableItemTypes = extractItemTypesFromProducts(products);
+  const availableSizes = extractSizesFromVariants(products);
 
   const handleColorChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setSelectedColor(event.target.value as string);
@@ -72,12 +87,17 @@ export default function ClientProductPage({
     setSelectedItemType(event.target.value as string);
   };
 
-  // Filter products by selected color and item type
+  const handleSizeChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setSelectedSize(event.target.value as string);
+  };
+
+  // Filter products by selected color, item type, and size
   const filteredProducts = products.filter((product) =>
     product.variants.some(
       (variant: any) =>
         (selectedColor === "" || variant.color === selectedColor) &&
-        (selectedItemType === "" || product.type === selectedItemType)
+        (selectedItemType === "" || product.type === selectedItemType) &&
+        (selectedSize === "" || variant.size === selectedSize)
     )
   );
 
@@ -101,35 +121,9 @@ export default function ClientProductPage({
 
         {/* Filters */}
         <Grid container spacing={2} className="my-4">
-          <Grid item xs={6}>
-            {/* Color Filter */}
-            <FormControl fullWidth>
-              {/* <InputLabel id="color-filter-label">Filter by Color</InputLabel> */}
-              <Select
-                labelId="color-filter-label"
-                id="color-filter"
-                value={selectedColor}
-                onChange={handleColorChange}
-                displayEmpty
-              >
-                <MenuItem value="">
-                  <em>All Colors</em>
-                </MenuItem>
-                {availableColors.map((color) => (
-                  <MenuItem key={color} value={color}>
-                    {color}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={6}>
+          <Grid item xs={4}>
             {/* Item Type Filter */}
             <FormControl fullWidth>
-              {/* <InputLabel id="item-type-filter-label">
-                Filter by Item Type
-              </InputLabel> */}
               <Select
                 labelId="item-type-filter-label"
                 id="item-type-filter"
@@ -148,13 +142,57 @@ export default function ClientProductPage({
               </Select>
             </FormControl>
           </Grid>
+
+          <Grid item xs={4}>
+            {/* Size Filter */}
+            <FormControl fullWidth>
+              <Select
+                labelId="size-filter-label"
+                id="size-filter"
+                value={selectedSize}
+                onChange={handleSizeChange}
+                displayEmpty
+              >
+                <MenuItem value="">
+                  <em>All Sizes</em>
+                </MenuItem>
+                {availableSizes.map((size) => (
+                  <MenuItem key={size} value={size}>
+                    {size}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={4}>
+            {/* Color Filter */}
+            <FormControl fullWidth>
+              <Select
+                labelId="color-filter-label"
+                id="color-filter"
+                value={selectedColor}
+                onChange={handleColorChange}
+                displayEmpty
+              >
+                <MenuItem value="">
+                  <em>All Colors</em>
+                </MenuItem>
+                {availableColors.map((color) => (
+                  <MenuItem key={color} value={color}>
+                    {color}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
         </Grid>
 
         {/* Render filtered products */}
         {renderProductGrid(filteredProducts, "product-")}
       </Container>
 
-      <div className="bg-emerald-200 rounded">
+      <div className="bg-emerald-300 rounded">
         <Container maxWidth="md" className="p-4">
           <TrendingSparkle />
           {renderProductGrid(trendingProducts, "trendingProduct-")}
@@ -166,7 +204,7 @@ export default function ClientProductPage({
         {renderProductGrid(newProducts, "newProduct-")}
       </Container>
 
-      <div className="bg-emerald-200 rounded">
+      <div className="bg-emerald-300 rounded">
         <Container maxWidth="md" className="p-4">
           <SoonSparkle />
           {renderProductGrid(soonProducts, "soonProduct-")}

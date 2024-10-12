@@ -1,4 +1,4 @@
-import ProductCard, { ProductBundleCard } from "@/components/ProductCard";
+import ProductCard from "@/components/ProductCard";
 import { prisma } from "@/lib/db/prisma";
 import { Container } from "@mui/material";
 import {
@@ -16,7 +16,7 @@ export default async function Home() {
   // Fetch products from the database
   const products = await prisma.product.findMany({
     take: 6,
-    where: { comingSoon: false },
+    where: { comingSoon: false, bundle: false },
     include: {
       variants: true, // Include the ProductVariant relation
     },
@@ -94,10 +94,12 @@ export default async function Home() {
       {/* <BasicDemoo /> */}
 
       {/* Main Product Grid */}
-      <Container maxWidth="md">
-        <SparklesTextDemo />
-        {renderProductGrid(products, "product-")}
-      </Container>
+      <div className="bg-emerald-300 rounded">
+        <Container maxWidth="md" className="p-4">
+          <SparklesTextDemo />
+          {renderProductGrid(products, "product-")}
+        </Container>
+      </div>
 
       <Container maxWidth="md">
         <BundleSparkle />

@@ -56,8 +56,8 @@ export default function CarouselItem({ initialProducts }: BasicDemoProps) {
               <Image
                 src={product.imageUrl[0]}
                 alt={product.name}
-                width={150}
-                height={150}
+                width={125}
+                height={125}
                 className="object-contain"
               />
             </div>

@@ -5,6 +5,7 @@ import ClientProductPage from "./ClientProductPage";
 export default async function ProductPage() {
   // Fetch products from Prisma
   const products = await prisma.product.findMany({
+    take: 8,
     where: { comingSoon: false },
     include: {
       variants: true, // Include ProductVariant relation
