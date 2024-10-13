@@ -69,7 +69,7 @@ export default async function Orders({ userId }: OrdersProps) {
                   {item.product.imageUrl && (
                     <Link href={`/products/${item.product.id}`}>
                       <img
-                        src={item.product.imageUrl}
+                        src={item.product.imageUrl[0]}
                         alt={item.product.name}
                         style={{ width: "100px", borderRadius: "8px" }}
                         className="hover:opacity-85 hover:scale-105 duration-500 ease-in-out"
@@ -86,13 +86,13 @@ export default async function Orders({ userId }: OrdersProps) {
                       {item.variantId && (
                         <>
                           <h2 className="text-sm">
-                            Variant Size:{" "}
+                            Size:{" "}
                             {item.product.variants.find(
                               (variant) => variant.id === item.variantId
                             )?.size || "N/A"}
                           </h2>
                           <h2 className="text-sm">
-                            Variant Price:{" "}
+                            Price:{" "}
                             {formatPrice(
                               item.product.variants.find(
                                 (variant) => variant.id === item.variantId

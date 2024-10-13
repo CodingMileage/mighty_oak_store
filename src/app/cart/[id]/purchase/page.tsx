@@ -14,6 +14,8 @@ export default async function PurchasePage({
 }) {
   const cart = await getCart();
 
+  console.log(cart?.items.map((item) => item));
+
   // Ensure cart is valid and has a subtotal
   if (!cart || cart.subtotal <= 0) {
     throw new Error("Cart is empty or invalid.");

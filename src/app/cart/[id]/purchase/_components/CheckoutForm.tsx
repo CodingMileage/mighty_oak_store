@@ -27,11 +27,14 @@ type CheckoutFormProps = {
   cart: {
     subtotal: number;
     items: Array<{
+      variantId: any;
       product: {
+        color: string;
+        type: string;
         name: string;
         imageUrl: string;
         price: number;
-        variant: Array<{
+        variants: Array<{
           id: number;
           price: number;
           quantity: number;
@@ -51,29 +54,41 @@ const stripePromise = loadStripe(
 export function CheckoutForm({ cart, clientSecret }: CheckoutFormProps) {
   console.log(
     "Cart: ",
-    cart.items.map((item) => item)
+    cart.items.map((item) => item.product.variants)
   );
 
   return (
     <div className="max-w-5xl w-full mx-auto space-y-8">
       <div>Items in Cart</div>
       <div className="flex">
-        {cart.items.map((cartItem, index) => (
-          <div className="p-3" key={index}>
-            <Image
-              src={cartItem.product.imageUrl[0]}
-              alt="Product"
-              width={50}
-              height={50}
-            />
-            <h3>{cartItem.product.name}</h3>
-            {/* <h3>{cartItem.product}</h3> */}
-            <h3>Quantity: {cartItem.quantity}</h3>
-            <h3>
-              Price: {formatPrice(cartItem.product.price * cartItem.quantity)}
-            </h3>
-          </div>
-        ))}
+        {cart.items.map((cartItem, index) => {
+          // Find the correct variant using the variantId
+          const selectedVariant = cartItem.product.variants.find(
+            (variant: any) => variant.id === cartItem.variantId
+          );
+
+          return (
+            <div className="p-3" key={index}>
+              <Image
+                src={cartItem.product.imageUrl[0]} // Adjust if needed for the actual structure
+                alt="Product"
+                width={50}
+                height={50}
+              />
+              <h3>{cartItem.product.name}</h3>
+              <h3>Quantity: {cartItem.quantity}</h3>
+
+              {/* Display variant-specific price and other details */}
+              {selectedVariant ? (
+                <div>
+                  <h3>Price: {formatPrice(selectedVariant.price)}</h3>
+                </div>
+              ) : (
+                <h3>Variant not found</h3>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       <Elements options={{ clientSecret }} stripe={stripePromise}>
