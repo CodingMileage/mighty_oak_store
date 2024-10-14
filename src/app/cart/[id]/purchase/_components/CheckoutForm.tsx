@@ -32,19 +32,19 @@ type CheckoutFormProps = {
         color: string;
         type: string;
         name: string;
-        imageUrl: string;
-        price: number;
+        imageUrl: string[];
+        price: number; // Base price, if needed
         variants: Array<{
           id: number;
-          price: number;
+          price: number; // Price for each variant
           quantity: number;
+          size?: string; // Assuming you have a size property for variants
         }>;
       };
-      quantity: number;
-    }>;
+      quantity: number; // Quantity of the product in the cart
+    }>[];
   };
   clientSecret: string;
-  metadata: { email: string; userId: string };
 };
 
 const stripePromise = loadStripe(
@@ -52,39 +52,48 @@ const stripePromise = loadStripe(
 );
 
 export function CheckoutForm({ cart, clientSecret }: CheckoutFormProps) {
-  console.log(
-    "Cart: ",
-    cart.items.map((item) => item.product.variants)
-  );
-
   return (
     <div className="max-w-5xl w-full mx-auto space-y-8">
-      <div>Items in Cart</div>
-      <div className="flex">
+      <h2 className="text-xl font-bold text-center">Items in Cart</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {cart.items.map((cartItem, index) => {
           // Find the correct variant using the variantId
           const selectedVariant = cartItem.product.variants.find(
-            (variant: any) => variant.id === cartItem.variantId
+            (variant) => variant.id === cartItem.variantId
           );
 
+          // Calculate the total price for this item
+          const itemTotalPrice = selectedVariant
+            ? selectedVariant.price * cartItem.quantity
+            : 0;
+
           return (
-            <div className="p-3" key={index}>
+            <div
+              className="flex flex-col items-center p-3 border border-gray-300 rounded"
+              key={index}
+            >
               <Image
                 src={cartItem.product.imageUrl[0]} // Adjust if needed for the actual structure
-                alt="Product"
-                width={50}
-                height={50}
+                alt={cartItem.product.name}
+                width={150} // Increased size for better visibility
+                height={150}
+                className="object-cover"
               />
-              <h3>{cartItem.product.name}</h3>
-              <h3>Quantity: {cartItem.quantity}</h3>
-
-              {/* Display variant-specific price and other details */}
+              <h3 className="font-semibold text-center">
+                {cartItem.product.name}
+              </h3>
+              <h4 className="text-center">
+                Size: {selectedVariant?.size || "N/A"}
+              </h4>
+              <h4 className="text-center">Quantity: {cartItem.quantity}</h4>
+              {/* Display variant-specific price and total */}
               {selectedVariant ? (
-                <div>
-                  <h3>Price: {formatPrice(selectedVariant.price)}</h3>
+                <div className="text-center">
+                  <h4>Price per Item: {formatPrice(selectedVariant.price)}</h4>
+                  <h4>Total Price: {formatPrice(itemTotalPrice)}</h4>
                 </div>
               ) : (
-                <h3>Variant not found</h3>
+                <h4 className="text-center">Variant not found</h4>
               )}
             </div>
           );
@@ -135,8 +144,7 @@ function Form({ subtotal }: { subtotal: number }) {
               address: {
                 line1: addressDetails.line1,
                 city: addressDetails.city,
-                state: addressDetails.state, // Assuming the address captured is line1
-                // Assuming the address captured is line1
+                state: addressDetails.state,
               },
             },
           },
@@ -153,9 +161,7 @@ function Form({ subtotal }: { subtotal: number }) {
             setErrorMessage("An unknown error occurred");
           }
         } else {
-          // Success! Handle the redirection or display success message
-          //Rounter here
-          // window.location.href = `${process.env.NEXT_PUBLIC_SERVER_URL}/stripe/purchase-success`;
+          // Success! Redirect to success page
           router.push("/stripe/purchase-success");
         }
       })

@@ -43,13 +43,24 @@ export default async function SuccessPage() {
     return <p>No recent orders found.</p>;
   }
 
+  // Calculate the total amount for the order
+  const totalAmount = order.items.reduce((total, item) => {
+    return total + (item.variant?.price || item.product.price) * item.quantity;
+  }, 0);
+
   return (
     <>
       <ConfettiSideCannons />
+      <div>
+        <h1 className="font-bold text-xl text-center">
+          Thank you for shopping with us!
+        </h1>
+        <h1 className="text-center">We hope to see you again!</h1>
+      </div>
       <div className="container mx-auto p-8">
         <h1 className="text-3xl font-bold mb-4">Order Confirmation</h1>
         <div className="border p-4 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-2">Your Latest Order</h2>
+          <h2 className="text-xl font-semibold mb-2">Your Order</h2>
 
           {/* Display order information */}
           <div className="flex flex-col md:flex-row justify-between items-start mb-4">
@@ -65,13 +76,17 @@ export default async function SuccessPage() {
                       className="hover:opacity-85 hover:scale-105 duration-500 ease-in-out"
                     />
                   )}
-                  <div>
+                  <div className="ml-4">
+                    {" "}
+                    {/* Add margin for better spacing */}
                     <p className="text-sm">
                       <strong>Product:</strong> {item.product.name}
                     </p>
-
                     <p className="text-sm">
                       <strong>Quantity:</strong> {item.quantity}
+                    </p>
+                    <p className="text-sm">
+                      <strong>Size:</strong> {item.variant?.size}
                     </p>
                     <p className="text-sm">
                       <strong>Price:</strong>{" "}
@@ -81,14 +96,28 @@ export default async function SuccessPage() {
                 </div>
               ))}
             </div>
-            <div>
+            <div className="md:ml-4">
               <p className="text-sm">
                 <strong>Order Date:</strong>{" "}
                 {new Date(order.createdAt).toLocaleString()}
               </p>
+              <p className="text-sm">
+                <strong>Order ID:</strong> {order.id} {/* Display Order ID */}
+              </p>
+              <p className="text-sm">
+                <strong>Total Amount:</strong> {formatPrice(totalAmount)}{" "}
+                {/* Display Total Amount */}
+              </p>
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="text-center">
+        <h1 className="font-bold text-xl">
+          A shiping label will be provided once the order is shipped!
+        </h1>
+        <h3 className="text">Check orders page for updates!</h3>
       </div>
     </>
   );

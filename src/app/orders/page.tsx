@@ -35,8 +35,6 @@ export default async function Orders({ userId }: OrdersProps) {
     }, // Include items and product details
   });
 
-  console.log(orders.map((item) => item.items));
-
   return (
     <Container maxWidth="lg">
       <h1 className="font-bold text-2xl">Orders for: {session.user.name}</h1>
@@ -110,6 +108,20 @@ export default async function Orders({ userId }: OrdersProps) {
                 </li>
               ))}
             </ul>
+
+            <div className="flex justify-around p-2 rounded bg-emerald-400">
+              {order.shippingLabel ? (
+                <h1>
+                  <span className="font-bold">Shipping Label:</span>{" "}
+                  {order.shippingLabel}
+                </h1>
+              ) : (
+                <h1>
+                  <span className="font-bold">Shipping Label:</span> Check Back
+                  Soon!
+                </h1>
+              )}
+            </div>
           </div>
         ))
       )}
