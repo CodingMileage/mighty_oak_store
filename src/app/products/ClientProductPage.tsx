@@ -2,14 +2,7 @@
 
 import { useState } from "react";
 import ProductCard from "@/components/ProductCard";
-import {
-  Container,
-  MenuItem,
-  Select,
-  InputLabel,
-  FormControl,
-  Grid,
-} from "@mui/material";
+import { Container, MenuItem, Select, FormControl, Grid } from "@mui/material";
 import {
   NewestSparkle,
   SoonSparkle,

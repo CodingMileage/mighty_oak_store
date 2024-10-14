@@ -90,7 +90,7 @@ export default function PaginationDemo() {
   const listTemplate = (items: Product) => {
     if (!items || items.length === 0) return null;
 
-    let list = items.map((product, index) => {
+    const list = items.map((product, index) => {
       return itemTemplate(product, index);
     });
 

@@ -3,7 +3,6 @@ import { prisma } from "@/lib/db/prisma";
 import { getServerSession } from "next-auth"; // Ensure you're using next-auth or a similar auth provider
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { formatPrice } from "@/lib/format";
-import Image from "next/image";
 
 export default async function SuccessPage() {
   // Get user session

@@ -27,7 +27,7 @@ type CheckoutFormProps = {
   cart: {
     subtotal: number;
     items: Array<{
-      variantId: any;
+      variantId: string;
       product: {
         color: string;
         type: string;
@@ -112,7 +112,7 @@ function Form({ subtotal }: { subtotal: number }) {
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [email, setEmail] = useState<string>();
+  const [email] = useState<string>();
   const [name, setName] = useState<string>();
   const [phone, setPhone] = useState<string>();
   const [addressDetails, setAddressDetails] = useState<{

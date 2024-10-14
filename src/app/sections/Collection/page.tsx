@@ -4,7 +4,6 @@ import { NewestSparkle } from "@/components/Nyxb/Sparkle";
 import ProductCard from "@/components/ProductCard";
 import { Container } from "@mui/material";
 import { motion } from "framer-motion";
-import { Button } from "primereact/button";
 import { getProducts } from "@/lib/db/products";
 
 export default async function Collection() {
