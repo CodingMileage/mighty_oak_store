@@ -7,15 +7,15 @@ import UserMenuButton from "@/app/NavBar/UserMenuButton";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-async function searchProducts(formData: FormData) {
-  "use server";
+// async function searchProducts(formData: FormData) {
+//   "use server";
 
-  const searchQuery = formData.get("searchQuery");
+//   const searchQuery = formData.get("searchQuery");
 
-  if (searchQuery) {
-    redirect("/search?query=" + searchQuery);
-  }
-}
+//   if (searchQuery) {
+//     redirect("/search?query=" + searchQuery);
+//   }
+// }
 
 export default async function Navbar() {
   const session = await getServerSession(authOptions);

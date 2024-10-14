@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "./NavBar/NavBar";
 import { Inter as FontSans } from "next/font/google";
 import { ny } from "@/lib/utils";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 
-import { NavigationMenuDemo } from "@/components/Nav";
 import SessionProvider from "./SessionProvider";
 
 const fontSans = FontSans({
@@ -14,16 +12,16 @@ const fontSans = FontSans({
   variable: "--font-sans",
 });
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+// const geistSans = localFont({
+//   src: "./fonts/GeistVF.woff",
+//   variable: "--font-geist-sans",
+//   weight: "100 900",
+// });
+// const geistMono = localFont({
+//   src: "./fonts/GeistMonoVF.woff",
+//   variable: "--font-geist-mono",
+//   weight: "100 900",
+// });
 
 export const metadata: Metadata = {
   title: "The Mighty Oak Store",

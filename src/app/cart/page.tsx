@@ -2,9 +2,7 @@
 import CartEntry from "./CartEntry";
 import { getCart } from "@/lib/db/cart";
 import { formatPrice } from "@/lib/format";
-import CheckoutButton from "@/components/CheckoutButton";
 import { setProductQuantity } from "./actions";
-import { prisma } from "@/lib/db/prisma";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { getServerSession } from "next-auth"; // Import the getServerSession function

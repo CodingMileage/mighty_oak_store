@@ -3,16 +3,12 @@ import Link from "next/link";
 import Image from "next/image";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "./ui/card";
 import { formatPrice } from "@/lib/format";
-import AddToCart from "@/app/products/[id]/AddToCart";
-import { incrementProductQuantity } from "@/app/products/[id]/actions";
-import StarRating from "./Rating";
 
 interface ProductCardProps {
   product: Product & {

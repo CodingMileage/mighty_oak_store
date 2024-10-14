@@ -1,17 +1,12 @@
 import Stripe from "stripe";
 import { getCart } from "@/lib/db/cart";
-import { prisma } from "@/lib/db/prisma";
 import { CheckoutForm } from "./_components/CheckoutForm";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
-export default async function PurchasePage({
-  params: { id },
-}: {
-  params: { id: string };
-}) {
+export default async function PurchasePage({}: { params: { id: string } }) {
   const cart = await getCart();
 
   console.log(cart?.items.map((item) => item));

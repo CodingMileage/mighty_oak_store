@@ -9,8 +9,6 @@ import {
   TrendingSparkle,
 } from "@/components/Nyxb/Sparkle";
 import Hero from "@/components/Hero";
-import BasicDemo from "@/components/DataView";
-import BasicDemoo from "@/components/Knob";
 
 export default async function Home() {
   // Fetch products from the database
