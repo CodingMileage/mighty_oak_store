@@ -16,6 +16,7 @@ import {
   SparklesTextDemo,
   TrendingSparkle,
 } from "@/components/Nyxb/Sparkle";
+import { SelectChangeEvent } from "@mui/material";
 
 // Props to pass the products fetched from the server
 interface ClientProductPageProps {
@@ -77,17 +78,17 @@ export default function ClientProductPage({
   const availableItemTypes = extractItemTypesFromProducts(products);
   const availableSizes = extractSizesFromVariants(products);
 
-  const handleColorChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  // Modify the event handler types
+
+  const handleColorChange = (event: SelectChangeEvent<string>) => {
     setSelectedColor(event.target.value as string);
   };
 
-  const handleItemTypeChange = (
-    event: React.ChangeEvent<{ value: unknown }>
-  ) => {
+  const handleItemTypeChange = (event: SelectChangeEvent<string>) => {
     setSelectedItemType(event.target.value as string);
   };
 
-  const handleSizeChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleSizeChange = (event: SelectChangeEvent<string>) => {
     setSelectedSize(event.target.value as string);
   };
 

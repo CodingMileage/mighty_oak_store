@@ -74,17 +74,17 @@ export default async function Home() {
     </div>
   );
 
-  const renderBundleGrid = (products: any[], keyPrefix: string) => (
-    <div className="my-4 grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6">
-      {products.length > 0 ? (
-        products.map((product) => (
-          <ProductBundleCard product={product} key={keyPrefix + product.id} />
-        ))
-      ) : (
-        <p>No products available.</p>
-      )}
-    </div>
-  );
+  // const renderBundleGrid = (products: any[], keyPrefix: string) => (
+  //   <div className="my-4 grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6">
+  //     {products.length > 0 ? (
+  //       products.map((product) => (
+  //         <ProductBundleCard product={product} key={keyPrefix + product.id} />
+  //       ))
+  //     ) : (
+  //       <p>No products available.</p>
+  //     )}
+  //   </div>
+  // );
 
   return (
     <>

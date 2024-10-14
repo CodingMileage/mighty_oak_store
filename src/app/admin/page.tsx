@@ -5,20 +5,35 @@ import OrderTable from "./OrderTable"; // Import the OrderTable component
 
 // Function to fetch orders from Prisma
 const getOrdersFromPrisma = async () => {
-  return await prisma.order.findMany({
-    include: {
-      user: { select: { name: true, email: true } }, // Include user details
-      items: {
-        include: {
-          product: true, // Include product details
-          variant: true, // Include variant details for each item
+  return await prisma.order
+    .findMany({
+      include: {
+        user: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
+        items: {
+          include: {
+            product: true,
+            variant: true,
+          },
         },
       },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+      orderBy: {
+        createdAt: "desc",
+      },
+    })
+    .then((orders) =>
+      orders.map((order) => ({
+        ...order,
+        user: {
+          ...order.user,
+          email: order.user.email || "No email", // Provide a fallback for null emails
+        },
+      }))
+    );
 };
 
 export default async function AdminPage() {

@@ -1,7 +1,35 @@
+// Define interfaces for the Order, User, and any other related objects
+interface User {
+  email: string;
+}
+
+interface OrderItem {
+  id: string;
+  product: {
+    name: string;
+  };
+  quantity: number;
+  price: number;
+}
+
+interface Order {
+  id: string;
+  user: User;
+  totalAmount: number;
+  status: string;
+  shippingLabel: string | null;
+  items: OrderItem[];
+}
+
+// Component Props
+interface OrderTableProps {
+  orders: Order[];
+}
+
 import { formatPrice } from "@/lib/format";
 import UpdateShippingLabel from "./UpdateShippingLabel"; // Ensure correct path
 
-const OrderTable = ({ orders }) => {
+const OrderTable: React.FC<OrderTableProps> = ({ orders }) => {
   return (
     <table className="min-w-full border-collapse border border-gray-200">
       <thead>
@@ -27,8 +55,7 @@ const OrderTable = ({ orders }) => {
               {order.shippingLabel || "No label"}
             </td>
             <td className="border border-gray-300 p-4">
-              <UpdateShippingLabel order={order} />{" "}
-              {/* Pass the order to the component */}
+              <UpdateShippingLabel order={order} />
             </td>
           </tr>
         ))}

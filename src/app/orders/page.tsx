@@ -9,7 +9,7 @@ interface OrdersProps {
   userId: string; // Expecting userId as a prop
 }
 
-export default async function Orders({ userId }: OrdersProps) {
+export default async function Orders({}: OrdersProps) {
   const session = await getServerSession(authOptions);
 
   // Check if user is authenticated
