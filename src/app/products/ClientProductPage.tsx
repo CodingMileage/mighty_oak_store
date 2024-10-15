@@ -11,19 +11,31 @@ import {
 } from "@/components/Nyxb/Sparkle";
 import { SelectChangeEvent } from "@mui/material";
 
+// Define the Variant and Product types
+interface Variant {
+  color?: string;
+  size?: string;
+}
+
+interface Product {
+  id: string;
+  type: string;
+  variants: Variant[];
+}
+
 // Props to pass the products fetched from the server
 interface ClientProductPageProps {
-  products: any[];
-  newProducts: any[];
-  trendingProducts: any[];
-  soonProducts: any[];
+  products: Product[];
+  newProducts: Product[];
+  trendingProducts: Product[];
+  soonProducts: Product[];
 }
 
 // Helper function to extract unique colors from product variants
-const extractColorsFromVariants = (products: any[]) => {
+const extractColorsFromVariants = (products: Product[]) => {
   const colorsSet = new Set<string>();
   products.forEach((product) => {
-    product.variants.forEach((variant: any) => {
+    product.variants.forEach((variant) => {
       if (variant.color) {
         colorsSet.add(variant.color);
       }
@@ -33,7 +45,7 @@ const extractColorsFromVariants = (products: any[]) => {
 };
 
 // Helper function to extract unique item types from the product type field
-const extractItemTypesFromProducts = (products: any[]) => {
+const extractItemTypesFromProducts = (products: Product[]) => {
   const itemTypesSet = new Set<string>();
   products.forEach((product) => {
     if (product.type) {
@@ -44,10 +56,10 @@ const extractItemTypesFromProducts = (products: any[]) => {
 };
 
 // Helper function to extract unique sizes from product variants
-const extractSizesFromVariants = (products: any[]) => {
+const extractSizesFromVariants = (products: Product[]) => {
   const sizesSet = new Set<string>();
   products.forEach((product) => {
-    product.variants.forEach((variant: any) => {
+    product.variants.forEach((variant) => {
       if (variant.size) {
         sizesSet.add(variant.size);
       }
@@ -71,24 +83,22 @@ export default function ClientProductPage({
   const availableItemTypes = extractItemTypesFromProducts(products);
   const availableSizes = extractSizesFromVariants(products);
 
-  // Modify the event handler types
-
   const handleColorChange = (event: SelectChangeEvent<string>) => {
-    setSelectedColor(event.target.value as string);
+    setSelectedColor(event.target.value);
   };
 
   const handleItemTypeChange = (event: SelectChangeEvent<string>) => {
-    setSelectedItemType(event.target.value as string);
+    setSelectedItemType(event.target.value);
   };
 
   const handleSizeChange = (event: SelectChangeEvent<string>) => {
-    setSelectedSize(event.target.value as string);
+    setSelectedSize(event.target.value);
   };
 
   // Filter products by selected color, item type, and size
   const filteredProducts = products.filter((product) =>
     product.variants.some(
-      (variant: any) =>
+      (variant) =>
         (selectedColor === "" || variant.color === selectedColor) &&
         (selectedItemType === "" || product.type === selectedItemType) &&
         (selectedSize === "" || variant.size === selectedSize)
@@ -96,7 +106,7 @@ export default function ClientProductPage({
   );
 
   // Helper to render product grids
-  const renderProductGrid = (products: any[], keyPrefix: string) => (
+  const renderProductGrid = (products: Product[], keyPrefix: string) => (
     <div className="my-4 grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6">
       {products.length > 0 ? (
         products.map((product) => (

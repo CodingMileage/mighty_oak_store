@@ -5,17 +5,35 @@ import Image from "next/image";
 import { formatPrice } from "@/lib/format";
 import AddToCart from "./AddToCart";
 
+interface Variant {
+  id: string;
+  size: string;
+  price: number;
+}
+
+interface Product {
+  id: string;
+  name: string;
+  type: string;
+  imageUrl: string[];
+  variants: Variant[];
+}
+
 interface ProductDetailsProps {
-  product: any;
+  product: Product;
 }
 
 export default function ProductDetails({ product }: ProductDetailsProps) {
-  const [selectedVariant, setSelectedVariant] = useState(product.variants[0]);
-  const [selectedImage, setSelectedImage] = useState(product.imageUrl[0]); // State for selected image
+  const [selectedVariant, setSelectedVariant] = useState<Variant>(
+    product.variants[0]
+  );
+  const [selectedImage, setSelectedImage] = useState<string>(
+    product.imageUrl[0]
+  ); // State for selected image
 
   // Handle variant selection
   const handleVariantSelection = (variantId: string) => {
-    const variant = product.variants.find((v: any) => v.id === variantId);
+    const variant = product.variants.find((v) => v.id === variantId);
     if (variant) {
       setSelectedVariant(variant);
     }
@@ -41,7 +59,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
 
         {/* Image Thumbnails */}
         <div className="flex gap-2">
-          {product.imageUrl.map((imageUrl: string, index: number) => (
+          {product.imageUrl.map((imageUrl, index) => (
             <button
               key={index}
               onClick={() => handleImageSelection(imageUrl)}
@@ -72,7 +90,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
           {/* Size Selector */}
           <p className="text-base text-gray-700">Available Sizes:</p>
           <div className="flex gap-2">
-            {product.variants.map((variant: any) => (
+            {product.variants.map((variant) => (
               <button
                 key={variant.id}
                 onClick={() => handleVariantSelection(variant.id)}

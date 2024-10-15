@@ -10,9 +10,38 @@ import {
 } from "@/components/Nyxb/Sparkle";
 import Hero from "@/components/Hero";
 
+// Define the ProductVariant type
+type ProductVariant = {
+  id: string;
+  productId: string;
+  price: number;
+  quantity: number;
+  size: string;
+  color: string;
+  imageUrl: string[];
+};
+
+// Define the Product type
+type Product = {
+  id: string;
+  description: string;
+  imageUrl: string[];
+  name: string;
+  price: number;
+  quantity: number;
+  color: string;
+  type: string;
+  bundle: boolean;
+  rating: number;
+  comingSoon: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  variants: ProductVariant[]; // Array of variants
+};
+
 export default async function Home() {
   // Fetch products from the database
-  const products = await prisma.product.findMany({
+  const products: Product[] = await prisma.product.findMany({
     take: 6,
     where: { comingSoon: false, bundle: false },
     include: {
@@ -20,7 +49,7 @@ export default async function Home() {
     },
   });
 
-  const bundle = await prisma.product.findMany({
+  const bundle: Product[] = await prisma.product.findMany({
     take: 6,
     where: { bundle: true },
     include: {
@@ -28,7 +57,7 @@ export default async function Home() {
     },
   });
 
-  const newProducts = await prisma.product.findMany({
+  const newProducts: Product[] = await prisma.product.findMany({
     take: 6,
     where: { comingSoon: false },
     orderBy: { createdAt: "desc" },
@@ -37,7 +66,7 @@ export default async function Home() {
     },
   });
 
-  const trendingProducts = await prisma.product.findMany({
+  const trendingProducts: Product[] = await prisma.product.findMany({
     take: 6,
     where: { comingSoon: false },
     orderBy: {
@@ -50,7 +79,7 @@ export default async function Home() {
     },
   });
 
-  const soonProducts = await prisma.product.findMany({
+  const soonProducts: Product[] = await prisma.product.findMany({
     take: 6,
     where: { comingSoon: true },
     orderBy: { createdAt: "desc" },
@@ -60,7 +89,7 @@ export default async function Home() {
   });
 
   // Helper to render product grids
-  const renderProductGrid = (products: any[], keyPrefix: string) => (
+  const renderProductGrid = (products: Product[], keyPrefix: string) => (
     <div className="my-4 grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6">
       {products.length > 0 ? (
         products.map((product) => (
@@ -72,24 +101,10 @@ export default async function Home() {
     </div>
   );
 
-  // const renderBundleGrid = (products: any[], keyPrefix: string) => (
-  //   <div className="my-4 grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6">
-  //     {products.length > 0 ? (
-  //       products.map((product) => (
-  //         <ProductBundleCard product={product} key={keyPrefix + product.id} />
-  //       ))
-  //     ) : (
-  //       <p>No products available.</p>
-  //     )}
-  //   </div>
-  // );
-
   return (
     <>
       {/* Hero Section */}
       <Hero />
-      {/* <BasicDemo initialProducts={products} /> */}
-      {/* <BasicDemoo /> */}
 
       {/* Main Product Grid */}
       <div className="bg-emerald-300 rounded">
@@ -99,11 +114,13 @@ export default async function Home() {
         </Container>
       </div>
 
+      {/* Bundle Products Section */}
       <Container maxWidth="md">
         <BundleSparkle />
-        {renderProductGrid(bundle, "product-")}
+        {renderProductGrid(bundle, "bundleProduct-")}
       </Container>
 
+      {/* Trending Products Section */}
       <div className="bg-emerald-300 rounded">
         <Container maxWidth="md" className="p-4">
           <TrendingSparkle />
@@ -112,7 +129,6 @@ export default async function Home() {
       </div>
 
       {/* Newest Products Section */}
-
       <Container maxWidth="md" className="p-4">
         <NewestSparkle />
         {renderProductGrid(newProducts, "newProduct-")}

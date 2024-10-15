@@ -12,24 +12,24 @@ import React from "react";
 
 export function BabyCarousel() {
   const [api, setApi] = React.useState<CarouselApi>();
-  const [current, setCurrent] = React.useState(0);
-  const [count, setCount] = React.useState(0);
+  // const [current, setCurrent] = React.useState(0);
+  // const [count, setCount] = React.useState(0);
 
   React.useEffect(() => {
     if (!api) {
       return;
     }
 
-    setCount(api.scrollSnapList().length);
-    setCurrent(api.selectedScrollSnap() + 1);
+    // setCount(api.scrollSnapList().length);
+    // setCurrent(api.selectedScrollSnap() + 1);
 
     api.on("select", () => {
-      setCurrent(api.selectedScrollSnap() + 1);
+      // setCurrent(api.selectedScrollSnap() + 1);
     });
   }, [api]);
 
   const plugin = React.useRef(
-    Autoplay({ delay: 3500, stopOnInteraction: true })
+    Autoplay({ delay: 4500, stopOnInteraction: true })
   );
 
   return (

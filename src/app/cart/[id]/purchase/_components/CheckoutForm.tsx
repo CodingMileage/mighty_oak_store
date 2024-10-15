@@ -26,23 +26,32 @@ import { useRouter } from "next/navigation";
 type CheckoutFormProps = {
   cart: {
     subtotal: number;
-    items: Array<{
-      variantId: string;
+    items: {
+      id: string;
+      productId: string;
+      variantId: string | null; // Allow null
+      quantity: number;
+      cartId: string;
       product: {
+        id: string;
+        description: string;
+        imageUrl: string[];
+        name: string;
+        price: number;
+        quantity: number;
         color: string;
         type: string;
-        name: string;
-        imageUrl: string[];
-        price: number; // Base price, if needed
-        variants: Array<{
-          id: number;
-          price: number; // Price for each variant
+        variants: {
+          id: string;
+          productId: string;
           quantity: number;
-          size?: string; // Assuming you have a size property for variants
-        }>;
+          imageUrl: string[];
+          price: number;
+          color: string;
+          size: string;
+        }[];
       };
-      quantity: number; // Quantity of the product in the cart
-    }>[];
+    }[];
   };
   clientSecret: string;
 };
@@ -52,6 +61,8 @@ const stripePromise = loadStripe(
 );
 
 export function CheckoutForm({ cart, clientSecret }: CheckoutFormProps) {
+  console.log(cart.items);
+
   return (
     <div className="max-w-5xl w-full mx-auto space-y-8">
       <h2 className="text-xl font-bold text-center">Items in Cart</h2>
@@ -156,7 +167,7 @@ function Form({ subtotal }: { subtotal: number }) {
             error.type === "card_error" ||
             error.type === "validation_error"
           ) {
-            setErrorMessage(error.message);
+            setErrorMessage(error.message ?? "An error has occured");
           } else {
             setErrorMessage("An unknown error occurred");
           }
