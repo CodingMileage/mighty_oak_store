@@ -7,24 +7,19 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
-
+import Image from "next/image";
 import React from "react";
 
 export function BabyCarousel() {
   const [api, setApi] = React.useState<CarouselApi>();
-  // const [current, setCurrent] = React.useState(0);
-  // const [count, setCount] = React.useState(0);
 
   React.useEffect(() => {
     if (!api) {
       return;
     }
 
-    // setCount(api.scrollSnapList().length);
-    // setCurrent(api.selectedScrollSnap() + 1);
-
     api.on("select", () => {
-      // setCurrent(api.selectedScrollSnap() + 1);
+      // If you need to perform any actions on selecting a slide
     });
   }, [api]);
 
@@ -34,7 +29,7 @@ export function BabyCarousel() {
 
   return (
     <Carousel
-      className="w-full h-1/2 max-w-xl lg:max-w-sm "
+      className="w-full h-1/2 max-w-xl lg:max-w-sm"
       setApi={setApi}
       opts={{
         align: "start",
@@ -44,56 +39,59 @@ export function BabyCarousel() {
       onMouseEnter={plugin.current.stop}
       onMouseLeave={plugin.current.play}
     >
-      <CarouselContent className="">
+      <CarouselContent>
         <CarouselItem>
-          <img
+          <Image
             src="/babyModel/img_6013.jpg"
-            alt=""
+            alt="Baby Model 1"
             className="object-cover h-full w-full rounded-md saturate-[1.25]"
+            width={300}
+            height={300}
           />
         </CarouselItem>
-        <CarouselItem className="">
-          <img
+        <CarouselItem>
+          <Image
             src="/babyModel/img_6315.jpg"
-            alt=""
-            className="object-cover h-full rounded-md saturate-[1.25]"
+            alt="Baby Model 2"
+            className="object-cover h-full w-full rounded-md saturate-[1.25]"
+            width={300}
+            height={300}
           />
         </CarouselItem>
-
-        <CarouselItem className="">
-          <img
+        <CarouselItem>
+          <Image
             src="/babyModel/img_6314.jpeg"
-            alt=""
+            alt="Baby Model 3"
             className="object-cover h-full w-full rounded-md saturate-[1.25]"
+            width={300}
+            height={300}
           />
         </CarouselItem>
-        {/* <CarouselItem>
-          <img
-            src="/babyModel/img_6016.jpg"
-            alt=""
-            className="object-cover h-full w-full rounded-md saturate-[1.25]"
-          />
-        </CarouselItem> */}
-
         <CarouselItem>
-          <img
+          <Image
             src="/babyModel/img_6054.jpeg"
-            alt=""
+            alt="Baby Model 4"
             className="object-cover h-full w-full rounded-md saturate-[1.25]"
+            width={300}
+            height={300}
           />
         </CarouselItem>
         <CarouselItem>
-          <img
+          <Image
             src="/babyModel/img_6283.jpeg"
-            alt=""
+            alt="Baby Model 5"
             className="object-cover h-full w-full rounded-md saturate-[1.25]"
+            width={300}
+            height={300}
           />
         </CarouselItem>
         <CarouselItem>
-          <img
+          <Image
             src="/babyModel/img_6014.jpg"
-            alt=""
+            alt="Baby Model 6"
             className="object-cover h-full w-full rounded-md saturate-[1.25]"
+            width={300}
+            height={300}
           />
         </CarouselItem>
       </CarouselContent>
