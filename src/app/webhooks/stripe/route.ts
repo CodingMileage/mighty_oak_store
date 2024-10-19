@@ -125,6 +125,7 @@ export async function POST(req: NextRequest) {
   
 
     console.log("Order processed successfully for:", email);
+    await new Promise((resolve) => setTimeout(resolve, 200));
     return new NextResponse("Order created", { status: 200 });
   }
 
