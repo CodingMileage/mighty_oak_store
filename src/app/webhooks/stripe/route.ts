@@ -97,6 +97,8 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
     console.log("Order created:", order);
 
     // Clear the cart after the order is processed
@@ -125,7 +127,6 @@ export async function POST(req: NextRequest) {
   
 
     console.log("Order processed successfully for:", email);
-    await new Promise((resolve) => setTimeout(resolve, 200));
     return new NextResponse("Order created", { status: 200 });
   }
 

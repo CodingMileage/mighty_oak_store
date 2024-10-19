@@ -42,10 +42,8 @@ export default async function SuccessPage() {
     return <p>No recent orders found.</p>;
   }
 
-  // Calculate the total amount for the order
-  const totalAmount = order.items.reduce((total, item) => {
-    return total + (item.variant?.price || item.product.price) * item.quantity;
-  }, 0);
+  // Use the total amount directly from the order object
+  const totalAmount = order.totalAmount; // Assuming totalAmount is stored in the order
 
   return (
     <>
@@ -105,7 +103,7 @@ export default async function SuccessPage() {
               </p>
               <p className="text-sm">
                 <strong>Total Amount:</strong> {formatPrice(totalAmount)}{" "}
-                {/* Display Total Amount */}
+                {/* Display Total Amount from Stripe */}
               </p>
             </div>
           </div>
@@ -114,7 +112,7 @@ export default async function SuccessPage() {
 
       <div className="text-center">
         <h1 className="font-bold text-xl">
-          A shiping label will be provided once the order is shipped!
+          A shipping label will be provided once the order is shipped!
         </h1>
         <h3 className="text">Check orders page for updates!</h3>
       </div>
