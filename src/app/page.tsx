@@ -9,7 +9,6 @@ import {
   TrendingSparkle,
 } from "@/components/Nyxb/Sparkle";
 import Hero from "@/components/Hero";
-import EmbeddedCheckoutButton from "@/components/EmbeddedCheckout";
 
 // Define the ProductVariant type
 type ProductVariant = {
@@ -106,7 +105,6 @@ export default async function Home() {
     <>
       {/* Hero Section */}
       <Hero />
-      <EmbeddedCheckoutButton />
 
       {/* Main Product Grid */}
       <div className="bg-emerald-300 rounded">

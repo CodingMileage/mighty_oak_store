@@ -9,6 +9,8 @@ const resend = new Resend(process.env.RESEND_API_KEY as string);
 
 export async function POST(req: NextRequest) {
   let event;
+  // let email;
+  // let userId;
 
   try {
     // Verify the webhook event using Stripe's secret
@@ -21,6 +23,12 @@ export async function POST(req: NextRequest) {
     console.error("Error verifying webhook signature:", err);
     return new NextResponse("Webhook Error", { status: 400 });
   }
+
+  // if(event.type === "checkout.session.completed") {
+  //   const session = event.data.object;
+  //   email = session.metadata?.email;
+  //   userId = session.metadata?.userId;
+  // }
 
   // Handle successful payment events
   if (event.type === "payment_intent.succeeded") {

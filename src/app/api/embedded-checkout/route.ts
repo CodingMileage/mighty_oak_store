@@ -12,17 +12,17 @@ const resend = new Resend(process.env.RESEND_API_KEY as string);
 export async function POST(request: Request) {
   let event;
 
-  try {
-    // Verify the webhook event using Stripe's secret
-    event = await stripe.webhooks.constructEvent(
-      await request.text(),
-      request.headers.get("stripe-signature") as string,
-      process.env.STRIPE_WEBHOOK_SECRET as string
-    );
-  } catch (err) {
-    console.error("Error verifying webhook signature:", err);
-    return new NextResponse("Webhook Error", { status: 400 });
-  }
+  // try {
+  //   // Verify the webhook event using Stripe's secret
+  //   event = await stripe.webhooks.constructEvent(
+  //     await request.text(),
+  //     request.headers.get("stripe-signature") as string,
+  //     process.env.STRIPE_WEBHOOK_SECRET as string
+  //   );
+  // } catch (err) {
+  //   console.error("Error verifying webhook signature:", err);
+  //   return new NextResponse("Webhook Error", { status: 400 });
+  // }
 
   try {
     const { cartId } = await request.json();
@@ -51,7 +51,7 @@ export async function POST(request: Request) {
         price_data: {
           currency: "USD",
           product_data: {
-            name: item.product.name + " x " + item.quantity, // Get the product name
+            name: item.product.name + " " + selectedVariant?.size, // Get the product name
             // description: selectedVariant?.product.description ?? "", // Optional description
           },
           unit_amount: selectedVariant?.price, // Use the specific variant price in cents
@@ -67,9 +67,14 @@ export async function POST(request: Request) {
       automatic_tax: { enabled: true },
       line_items: lineItems,
       mode: "payment",
-      metadata: {
-        userId: session?.user?.id ?? "unknown", // Attach user ID or default
-        email: session?.user?.email ?? "unknown", // Attach user email or default
+      shipping_address_collection: {
+        allowed_countries: ["US"], // Specify allowed countries for shipping
+      },
+      payment_intent_data: {
+        metadata: {
+          userId: session?.user?.id ?? "unknown",
+          email: session?.user?.email ?? "unknown",
+        },
       },
       return_url: `${request.headers.get("origin")}/stripe/purchase-success`,
     });

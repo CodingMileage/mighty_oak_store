@@ -125,18 +125,22 @@ export async function mergeAnonCartIntoUserCart(userId: string) {
     if (userCart) {
       const mergedCartItems = mergeCartItems(localCart.items, userCart.items);
 
+      // Clear existing items in the user's cart
       await tx.cartItem.deleteMany({
         where: { cartId: userCart.id },
       });
 
+      // Insert the merged items into the user's cart
       await tx.cartItem.createMany({
         data: mergedCartItems.map((item) => ({
           cartId: userCart.id,
           productId: item.productId,
+          variantId: item.variantId, // Include the variantId
           quantity: item.quantity,
         })),
       });
     } else {
+      // Create a new cart for the user with the items from the anonymous cart
       await tx.cart.create({
         data: {
           userId,
@@ -144,6 +148,7 @@ export async function mergeAnonCartIntoUserCart(userId: string) {
             createMany: {
               data: localCart.items.map((item) => ({
                 productId: item.productId,
+                variantId: item.variantId, // Include the variantId
                 quantity: item.quantity,
               })),
             },
@@ -152,10 +157,12 @@ export async function mergeAnonCartIntoUserCart(userId: string) {
       });
     }
 
+    // Delete the anonymous cart
     await tx.cart.delete({
       where: { id: localCart.id },
     });
 
+    // Clear the localCartId cookie
     cookies().set("localCartId", "");
   });
 }
@@ -163,13 +170,60 @@ export async function mergeAnonCartIntoUserCart(userId: string) {
 function mergeCartItems(...cartItems: CartItem[][]) {
   return cartItems.reduce((acc, items) => {
     items.forEach((item) => {
-      const existingItem = acc.find((i) => i.productId === item.productId);
+      // Find existing item by productId and variantId
+      const existingItem = acc.find(
+        (i) => i.productId === item.productId && i.variantId === item.variantId
+      );
+
       if (existingItem) {
+        // If the item with the same productId and variantId exists, update its quantity
         existingItem.quantity += item.quantity;
       } else {
+        // Otherwise, add the new item to the cart
         acc.push(item);
       }
     });
     return acc;
   }, [] as CartItem[]);
 }
+
+export async function clearCart(): Promise<void> {
+  const session = await getServerSession(authOptions);
+
+  let cartId: string | null = null;
+
+  if (session) {
+    // Fetch the cart for the logged-in user
+    const cart = await prisma.cart.findFirst({
+      where: { userId: session.user.id },
+    });
+
+    if (cart) {
+      cartId = cart.id;
+    }
+  } else {
+    // Fetch the cart for the anonymous user (using cookies)
+    cartId = cookies().get("localCartId")?.value || null;
+  }
+
+  if (!cartId) {
+    console.error("Cart not found.");
+    return;
+  }
+
+  // Clear cart items
+  await prisma.cartItem.deleteMany({
+    where: { cartId },
+  });
+
+  // Optionally, delete the cart itself if needed
+  // await prisma.cart.delete({
+  //   where: { id: cartId },
+  // });
+
+  // If it's an anonymous cart, clear the local cart cookie
+  if (!session) {
+    cookies().set("localCartId", "");
+  }
+}
+

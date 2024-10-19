@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { getServerSession } from "next-auth"; // Import the getServerSession function
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import EmbeddedCheckoutButton from "@/components/EmbeddedCheckout";
 
 export const metadata = {
   title: "Your Cart - The Mighty Oak Store",
@@ -30,12 +31,13 @@ export default async function CartPage() {
       {!cart?.items.length && <p>Your cart is empty.</p>}
       <div className="flex flex-col items-end sm:items-center">
         <p className="mb-3 font-bold">
-          Subtotal: {formatPrice(cart?.subtotal || 0)}
+          Cart total: {formatPrice(cart?.subtotal || 0)}
         </p>
         {session ? ( // Check if the user is logged in
-          <Link href={`cart/${cart?.id}/purchase`}>
-            <Button>Checkout</Button>
-          </Link>
+          // <Link href={`cart/${cart?.id}/purchase`}>
+          //   <Button>Checkout</Button>
+          // </Link>
+          <EmbeddedCheckoutButton />
         ) : (
           <p>Please log in to proceed to checkout.</p> // Message for logged-out users
         )}
