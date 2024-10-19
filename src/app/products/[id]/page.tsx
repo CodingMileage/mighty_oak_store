@@ -59,14 +59,14 @@ export default async function ProductPage({
     <>
       <ProductDetails product={product} />{" "}
       {/* Render the client-side component */}
-      <div className="m-12">
-        <h1 className="m-6">
+      <div className="mt-12">
+        <h1 className="mb-6">
           <SimilarSparkle />
         </h1>
         <CarouselItem initialProducts={similarProducts} />
       </div>
-      <div className="m-12">
-        <h1 className="m-6">
+      <div className="mt-12">
+        <h1 className="mb-6">
           <TrendingSparkle />
         </h1>
         <CarouselItem initialProducts={trendingProducts} />

@@ -87,7 +87,7 @@ export function BabyCarousel() {
         </CarouselItem>
         <CarouselItem>
           <Image
-            src="/babyModel/img_6014.JPEG"
+            src="/babyModel/img_6014.JPG"
             alt="Baby Model 6"
             className="object-cover h-full w-full rounded-md saturate-[1.25]"
             width={300}
