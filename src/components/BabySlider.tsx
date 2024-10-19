@@ -42,7 +42,7 @@ export function BabyCarousel() {
       <CarouselContent>
         <CarouselItem>
           <Image
-            src="/babyModel/img_6013.jpg"
+            src="/babyModel/IMG_6013.JPG"
             alt="Baby Model 1"
             className="object-cover h-full w-full rounded-md saturate-[1.25]"
             width={300}
@@ -51,7 +51,7 @@ export function BabyCarousel() {
         </CarouselItem>
         <CarouselItem>
           <Image
-            src="/babyModel/img_6315.jpg"
+            src="/babyModel/IMG_6315.JPG"
             alt="Baby Model 2"
             className="object-cover h-full w-full rounded-md saturate-[1.25]"
             width={300}
@@ -60,7 +60,7 @@ export function BabyCarousel() {
         </CarouselItem>
         <CarouselItem>
           <Image
-            src="/babyModel/img_6314.jpeg"
+            src="/babyModel/IMG_6314.JPEG"
             alt="Baby Model 3"
             className="object-cover h-full w-full rounded-md saturate-[1.25]"
             width={300}
@@ -69,7 +69,7 @@ export function BabyCarousel() {
         </CarouselItem>
         <CarouselItem>
           <Image
-            src="/babyModel/img_6054.jpeg"
+            src="/babyModel/IMG_6054.JPEG"
             alt="Baby Model 4"
             className="object-cover h-full w-full rounded-md saturate-[1.25]"
             width={300}
@@ -78,7 +78,7 @@ export function BabyCarousel() {
         </CarouselItem>
         <CarouselItem>
           <Image
-            src="/babyModel/img_6283.jpeg"
+            src="/babyModel/IMG_6283.JPEG"
             alt="Baby Model 5"
             className="object-cover h-full w-full rounded-md saturate-[1.25]"
             width={300}
@@ -87,7 +87,7 @@ export function BabyCarousel() {
         </CarouselItem>
         <CarouselItem>
           <Image
-            src="/babyModel/img_6014.jpg"
+            src="/babyModel/img_6014.JPEG"
             alt="Baby Model 6"
             className="object-cover h-full w-full rounded-md saturate-[1.25]"
             width={300}
