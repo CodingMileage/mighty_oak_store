@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/db/prisma";
+
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
@@ -7,25 +7,12 @@ import { getCart } from "@/lib/db/cart";
 import { Resend } from "resend";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {});
-const resend = new Resend(process.env.RESEND_API_KEY as string);
+
 
 export async function POST(request: Request) {
-  let event;
-
-  // try {
-  //   // Verify the webhook event using Stripe's secret
-  //   event = await stripe.webhooks.constructEvent(
-  //     await request.text(),
-  //     request.headers.get("stripe-signature") as string,
-  //     process.env.STRIPE_WEBHOOK_SECRET as string
-  //   );
-  // } catch (err) {
-  //   console.error("Error verifying webhook signature:", err);
-  //   return new NextResponse("Webhook Error", { status: 400 });
-  // }
 
   try {
-    const { cartId } = await request.json();
+
 
     // Retrieve the cart using Prisma, including variant and product info
     const cart = await getCart();

@@ -3,8 +3,7 @@ import CartEntry from "./CartEntry";
 import { getCart } from "@/lib/db/cart";
 import { formatPrice } from "@/lib/format";
 import { setProductQuantity } from "./actions";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+
 import { getServerSession } from "next-auth"; // Import the getServerSession function
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import EmbeddedCheckoutButton from "@/components/EmbeddedCheckout";

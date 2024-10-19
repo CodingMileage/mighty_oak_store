@@ -4,7 +4,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 import { env } from "@/lib/env";
 import GoogleProvider from "next-auth/providers/google";
-import { clearCart, mergeAnonCartIntoUserCart } from "@/lib/db/cart";
+import {mergeAnonCartIntoUserCart } from "@/lib/db/cart";
 
 const prisma = new PrismaClient();
 

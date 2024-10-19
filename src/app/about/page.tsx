@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 export default function AboutUs() {
   return (
     <div className="bg-gray-100 text-gray-800 min-h-screen">
