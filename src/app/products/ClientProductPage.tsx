@@ -1,8 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import ProductCard from "@/components/ProductCard";
-import { Container, MenuItem, Select, FormControl, Grid } from "@mui/material";
+import {
+  Container,
+  MenuItem,
+  Select,
+  FormControl,
+  Grid,
+  CircularProgress,
+} from "@mui/material";
 import {
   NewestSparkle,
   SoonSparkle,
@@ -79,6 +86,7 @@ export default function ClientProductPage({
   const [selectedItemType, setSelectedItemType] = useState<string>("");
   const [selectedSize, setSelectedSize] = useState<string>("");
 
+  const [loading, setLoading] = useState(false);
   const availableColors = extractColorsFromVariants(products);
   const availableItemTypes = extractItemTypesFromProducts(products);
   const availableSizes = extractSizesFromVariants(products);
@@ -95,15 +103,17 @@ export default function ClientProductPage({
     setSelectedSize(event.target.value);
   };
 
-  // Filter products by selected color, item type, and size
-  const filteredProducts = products.filter((product) =>
-    product.variants.some(
-      (variant) =>
-        (selectedColor === "" || variant.color === selectedColor) &&
-        (selectedItemType === "" || product.type === selectedItemType) &&
-        (selectedSize === "" || variant.size === selectedSize)
-    )
-  );
+  // Filter products by selected color, item type, and size, memoized for performance
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) =>
+      product.variants.some(
+        (variant) =>
+          (selectedColor === "" || variant.color === selectedColor) &&
+          (selectedItemType === "" || product.type === selectedItemType) &&
+          (selectedSize === "" || variant.size === selectedSize)
+      )
+    );
+  }, [products, selectedColor, selectedItemType, selectedSize]);
 
   // Helper to render product grids
   const renderProductGrid = (products: Product[], keyPrefix: string) => (
@@ -117,6 +127,8 @@ export default function ClientProductPage({
       )}
     </div>
   );
+
+  console.log(filteredProducts);
 
   return (
     <>
@@ -192,8 +204,14 @@ export default function ClientProductPage({
           </Grid>
         </Grid>
 
-        {/* Render filtered products */}
-        {renderProductGrid(filteredProducts, "product-")}
+        {/* Loading state */}
+        {loading ? (
+          <div className="flex justify-center">
+            <CircularProgress />
+          </div>
+        ) : (
+          renderProductGrid(filteredProducts, "product-")
+        )}
       </Container>
 
       <div className="bg-emerald-300 rounded">
