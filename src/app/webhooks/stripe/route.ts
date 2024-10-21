@@ -156,7 +156,7 @@ export async function POST(req: NextRequest) {
   
       <p>We can't wait to see you again! If you have any questions about your order, feel free to reach out to us at THEMOS@themightyoakstore.com.</p>
   
-      <p style="color: #555;">Thank you for choosing The Mighty Oak Tree!</p>
+      <p style="color: #555;">Thank you for choosing The Mighty Oak Store!</p>
     </div>
   `;
   
