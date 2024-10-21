@@ -1,19 +1,13 @@
-
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Stripe from "stripe";
 import { getCart } from "@/lib/db/cart";
-import { Resend } from "resend";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {});
 
-
 export async function POST(request: Request) {
-
   try {
-
-
     // Retrieve the cart using Prisma, including variant and product info
     const cart = await getCart();
 
@@ -39,7 +33,6 @@ export async function POST(request: Request) {
           currency: "USD",
           product_data: {
             name: item.product.name + " " + selectedVariant?.size, // Get the product name
-            // description: selectedVariant?.product.description ?? "", // Optional description
           },
           unit_amount: selectedVariant?.price, // Use the specific variant price in cents
         },
@@ -70,8 +63,10 @@ export async function POST(request: Request) {
       id: stripeSession.id,
       client_secret: stripeSession.client_secret,
     });
-  } catch (error: any) {
-    console.error("Stripe session error:", error.message);
-    return NextResponse.json({ message: error.message }, { status: 500 });
+  } catch (error) {
+    // Handle the error without using 'any'
+    const errorMessage = (error instanceof Error) ? error.message : 'Unknown error';
+    console.error("Stripe session error:", errorMessage);
+    return NextResponse.json({ message: errorMessage }, { status: 500 });
   }
 }
