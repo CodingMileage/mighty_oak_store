@@ -50,7 +50,7 @@ export async function POST(request: Request) {
     // Create a Stripe Checkout session
     const stripeSession = await stripe.checkout.sessions.create({
       ui_mode: "embedded",
-      payment_method_types: ["card"],
+      payment_method_types: ["card", "cashapp"],
       automatic_tax: { enabled: true },
       line_items: lineItems,
       mode: "payment",
