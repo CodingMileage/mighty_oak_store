@@ -105,11 +105,12 @@ export async function POST(req: NextRequest) {
     // Clear the cart after the order is processed
     await prisma.cart.delete({ where: { userId: user.id } });
 
-    
+    const logo = "https://themightyoakstore.com/images/logo.png";
+
     const htmlContent = `
     <div style="font-family: Arial, sans-serif; color: #333;">
       <h1 style="font-weight: bold;">Thank you for shopping with us!</h1>
-      <img src="/images/logo.png" alt="Logo" style="width: 150px; height: auto; margin-bottom: 20px;" />
+      <img src="${logo}" alt="Logo" style="width: 150px; height: auto; margin-bottom: 20px;" />
       
       <h2>Your Order Summary</h2>
       <p>Thank you for your purchase! We're excited to fulfill your order. Here are the details of your order:</p>
