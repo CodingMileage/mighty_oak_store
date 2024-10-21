@@ -86,7 +86,7 @@ export default function ClientProductPage({
   const [selectedItemType, setSelectedItemType] = useState<string>("");
   const [selectedSize, setSelectedSize] = useState<string>("");
 
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const availableColors = extractColorsFromVariants(products);
   const availableItemTypes = extractItemTypesFromProducts(products);
   const availableSizes = extractSizesFromVariants(products);
