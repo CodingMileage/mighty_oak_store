@@ -2,6 +2,7 @@ import { prisma } from "@/lib/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { Resend } from "resend";
+import { formatPrice } from "@/lib/format";
 
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
@@ -106,16 +107,56 @@ export async function POST(req: NextRequest) {
 
     
     const htmlContent = `
-    <h1 style="font-weight: bold;">Thank you for shopping with us!</h1>
-    <img src=${"/images/logo.png"} alt="Logo" />
-    <div>
-      <h1>Here are your order details:</h1>
-      <h2>Shipping information</h2>
+    <div style="font-family: Arial, sans-serif; color: #333;">
+      <h1 style="font-weight: bold;">Thank you for shopping with us!</h1>
+      <img src="/images/logo.png" alt="Logo" style="width: 150px; height: auto; margin-bottom: 20px;" />
+      
+      <h2>Your Order Summary</h2>
+      <p>Thank you for your purchase! We're excited to fulfill your order. Here are the details of your order:</p>
+      
+      <h3>Shipping Information:</h3>
       <p>
-        ${address?.line1}, ${address?.city}, ${address?.state}
+        <strong>Name:</strong> ${paymentIntent.shipping?.name}<br/>
+        <strong>Address:</strong> ${address?.line1}, ${address?.city}, ${address?.state}, ${address?.postal_code}, ${address?.country}
       </p>
+  
+      <h3>Order Details:</h3>
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr>
+            <th style="border-bottom: 1px solid #ccc; padding: 10px; text-align: left;">Product</th>
+            <th style="border-bottom: 1px solid #ccc; padding: 10px; text-align: center;">Quantity</th>
+            <th style="border-bottom: 1px solid #ccc; padding: 10px; text-align: right;">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${order.items
+            .map(
+              (item) => `
+            <tr>
+              <td style="border-bottom: 1px solid #eee; padding: 10px;">
+                <strong>${item.name}</strong><br/>
+
+              </td>
+              <td style="border-bottom: 1px solid #eee; padding: 10px; text-align: center;">${item.quantity}</td>
+              <td style="border-bottom: 1px solid #eee; padding: 10px; text-align: right;">${formatPrice(item.price)}</td>
+            </tr>
+          `
+            )
+            .join("")}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2" style="padding: 10px; text-align: right; font-weight: bold;">Total Amount:</td>
+            <td style="padding: 10px; text-align: right; font-weight: bold;">${formatPrice(order.totalAmount)}</td>
+          </tr>
+        </tfoot>
+      </table>
+  
+      <p>We can't wait to see you again! If you have any questions about your order, feel free to reach out to us at THEMOS@themightyoakstore.com.</p>
+  
+      <p style="color: #555;">Thank you for choosing The Mighty Oak Tree!</p>
     </div>
-    <p>We can't wait to see you again!</p>
   `;
   
   await resend.emails.send({
@@ -124,6 +165,7 @@ export async function POST(req: NextRequest) {
     subject: "The Mighty Oak Tree Order Confirmation",
     html: htmlContent,
   });
+  
   
 
     console.log("Order processed successfully for:", email);

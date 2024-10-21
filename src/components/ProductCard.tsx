@@ -54,9 +54,11 @@ export default function ProductCard({ product }: ProductCardProps) {
               <CardTitle className="font-bold text-xl text-center align-middle text-gray-600">
                 {product.name}
               </CardTitle>
-              <h1 className="text-2xl font-bold text-emerald-500 text-center">
-                {formatPrice(firstVariant.price)}
-              </h1>
+              {!product.comingSoon && (
+                <h1 className="text-2xl font-bold text-emerald-500 text-center">
+                  {formatPrice(firstVariant.price)}
+                </h1>
+              )}
               <CardDescription className="font-semibold text-lg text-center align-middle text-gray-400">
                 {product.type}
               </CardDescription>

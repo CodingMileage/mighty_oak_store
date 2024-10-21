@@ -15,6 +15,7 @@ interface Product {
   id: string;
   name: string;
   type: string;
+  comingSoon: boolean;
   imageUrl: string[];
   variants: Variant[];
 }
@@ -114,17 +115,22 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
 
         {/* Price & Add to Cart */}
         <div className="mt-6">
-          <h1 className="text-3xl font-bold text-emerald-500">
-            {formatPrice(selectedVariant.price)}
-          </h1>
+          {/* Conditionally render price and AddToCart button only if the product is not coming soon */}
+          {!product.comingSoon && (
+            <>
+              <h1 className="text-3xl font-bold text-emerald-500">
+                {formatPrice(selectedVariant.price)}
+              </h1>
 
-          <div className="mt-4">
-            <AddToCart
-              productId={product.id}
-              variantId={selectedVariant.id} // Pass selected variant ID
-              className="bg-emerald-500 text-white px-6 py-2 rounded-md hover:bg-emerald-600 transition ease-in-out"
-            />
-          </div>
+              <div className="mt-4">
+                <AddToCart
+                  productId={product.id}
+                  variantId={selectedVariant.id} // Pass selected variant ID
+                  className="bg-emerald-500 text-white px-6 py-2 rounded-md hover:bg-emerald-600 transition ease-in-out"
+                />
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
