@@ -9,6 +9,7 @@ interface Variant {
   id: string;
   size: string;
   price: number;
+  quantity: number;
 }
 
 interface Product {
@@ -85,7 +86,13 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
       {/* Product Details */}
       <div className="lg:w-1/2 w-full space-y-4">
         {/* Product Name */}
-        <h2 className="text-4xl font-bold text-gray-900">{product.name}</h2>
+        {/* Product Name and Quantity */}
+        <div className="flex justify-between items-center">
+          <h2 className="text-4xl font-bold text-gray-900">{product.name}</h2>
+          <span className=" whitespace-nowrap font-semibold text-emerald-500 bg-emerald-100 px-3 py-1 rounded-full">
+            {selectedVariant.quantity} in stock
+          </span>
+        </div>
 
         <div>
           {/* Size Selector */}
