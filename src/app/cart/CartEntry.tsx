@@ -59,7 +59,7 @@ export default function CartEntry({
     <Container maxWidth="md">
       <Toast ref={toast} />
       <div className="flex flex-wrap items-center gap-3">
-        <Link href={"/products/" + variant?.id} className="font-bold">
+        <Link href={"/products/" + product?.id} className="font-bold">
           {" "}
           {/* Use variant?.id to avoid potential errors */}
           <Image
