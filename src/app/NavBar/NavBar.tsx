@@ -34,7 +34,7 @@ export default async function Navbar() {
         <div className="flex-grow flex justify-center">
           <Link href="/" className="text-xl normal-case">
             <Image
-              src={"/images/logo.png"}
+              src={"/images/logoTree.png"}
               width={100}
               height={100}
               alt="Logo"
