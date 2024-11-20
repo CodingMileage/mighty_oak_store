@@ -107,40 +107,40 @@ export default async function Home() {
       <Hero />
 
       {/* Main Product Grid */}
-      <div className="bg-emerald-300 rounded">
+      {/* <div className="bg-emerald-300 rounded">
         <Container maxWidth="md" className="p-4">
           <SparklesTextDemo />
           {renderProductGrid(products, "product-")}
         </Container>
-      </div>
+      </div> */}
 
       {/* Bundle Products Section */}
-      <Container maxWidth="md">
+      {/* <Container maxWidth="md">
         <BundleSparkle />
         {renderProductGrid(bundle, "bundleProduct-")}
-      </Container>
+      </Container> */}
 
       {/* Trending Products Section */}
-      <div className="bg-emerald-300 rounded">
+      {/* <div className="bg-emerald-300 rounded">
         <Container maxWidth="md" className="p-4">
           <TrendingSparkle />
           {renderProductGrid(trendingProducts, "trendingProduct-")}
         </Container>
-      </div>
+      </div> */}
 
       {/* Newest Products Section */}
-      <Container maxWidth="md" className="p-4">
+      {/* <Container maxWidth="md" className="p-4">
         <NewestSparkle />
         {renderProductGrid(newProducts, "newProduct-")}
-      </Container>
+      </Container> */}
 
       {/* Coming Soon Products Section */}
-      <div className="bg-emerald-300 rounded">
+      {/* <div className="bg-emerald-300 rounded">
         <Container maxWidth="md" className="p-4">
           <SoonSparkle />
           {renderProductGrid(soonProducts, "soonProduct-")}
         </Container>
-      </div>
+      </div> */}
     </>
   );
 }

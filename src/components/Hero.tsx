@@ -10,10 +10,10 @@ import Image from "next/image";
 export default function Hero() {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{ duration: 1.5, ease: "easeOut" }}
-      className="pb-5"
+      className="h-screen flex items-center justify-center mt-[-30px]"
     >
       <Container maxWidth="lg" className="flex justify-between rounded-md p-4">
         <div className="flex flex-col justify-around w-full rounded-md max-w-xl items-center pr-4">
