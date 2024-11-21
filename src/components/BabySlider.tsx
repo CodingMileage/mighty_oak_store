@@ -58,7 +58,7 @@ export function BabyCarousel() {
             height={300}
           />
         </CarouselItem>
-        {/* <CarouselItem>
+        <CarouselItem>
           <Image
             src="/babyModel/IMG_6314.JPEG"
             alt="Baby Model 3"
@@ -66,8 +66,8 @@ export function BabyCarousel() {
             width={300}
             height={300}
           />
-        </CarouselItem> */}
-        <CarouselItem>
+        </CarouselItem>
+        {/* <CarouselItem>
           <Image
             src="/babyModel/IMG_6054.JPEG"
             alt="Baby Model 4"
@@ -75,7 +75,7 @@ export function BabyCarousel() {
             width={300}
             height={300}
           />
-        </CarouselItem>
+        </CarouselItem> */}
         <CarouselItem>
           <Image
             src="/babyModel/IMG_6283.JPEG"

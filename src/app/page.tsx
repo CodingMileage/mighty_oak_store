@@ -1,105 +1,98 @@
-import ProductCard from "@/components/ProductCard";
-import { prisma } from "@/lib/db/prisma";
-import { Container } from "@mui/material";
-import {
-  BundleSparkle,
-  NewestSparkle,
-  SoonSparkle,
-  SparklesTextDemo,
-  TrendingSparkle,
-} from "@/components/Nyxb/Sparkle";
+// import ProductCard from "@/components/ProductCard";
+// import { prisma } from "@/lib/db/prisma";
+
 import Hero from "@/components/Hero";
 
 // Define the ProductVariant type
-type ProductVariant = {
-  id: string;
-  productId: string;
-  price: number;
-  quantity: number;
-  size: string;
-  color: string;
-  imageUrl: string[];
-};
+// type ProductVariant = {
+//   id: string;
+//   productId: string;
+//   price: number;
+//   quantity: number;
+//   size: string;
+//   color: string;
+//   imageUrl: string[];
+// };
 
 // Define the Product type
-type Product = {
-  id: string;
-  description: string;
-  imageUrl: string[];
-  name: string;
-  price: number;
-  quantity: number;
-  color: string;
-  type: string;
-  bundle: boolean;
-  rating: number;
-  comingSoon: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  variants: ProductVariant[]; // Array of variants
-};
+// type Product = {
+//   id: string;
+//   description: string;
+//   imageUrl: string[];
+//   name: string;
+//   price: number;
+//   quantity: number;
+//   color: string;
+//   type: string;
+//   bundle: boolean;
+//   rating: number;
+//   comingSoon: boolean;
+//   createdAt: Date;
+//   updatedAt: Date;
+//   variants: ProductVariant[];
+// };
 
 export default async function Home() {
   // Fetch products from the database
-  const products: Product[] = await prisma.product.findMany({
-    take: 6,
-    where: { comingSoon: false, bundle: false },
-    include: {
-      variants: true, // Include the ProductVariant relation
-    },
-  });
+  // const products: Product[] = await prisma.product.findMany({
+  //   take: 6,
+  //   where: { comingSoon: false, bundle: false },
+  //   include: {
+  //     variants: true,
+  //   },
+  // });
 
-  const bundle: Product[] = await prisma.product.findMany({
-    take: 6,
-    where: { bundle: true },
-    include: {
-      variants: true, // Include the ProductVariant relation
-    },
-  });
+  // const bundle: Product[] = await prisma.product.findMany({
+  //   take: 6,
+  //   where: { bundle: true },
+  //   include: {
+  //     variants: true,
+  //   },
+  // });
 
-  const newProducts: Product[] = await prisma.product.findMany({
-    take: 6,
-    where: { comingSoon: false },
-    orderBy: { createdAt: "desc" },
-    include: {
-      variants: true, // Include the ProductVariant relation
-    },
-  });
+  // const newProducts: Product[] = await prisma.product.findMany({
+  //   take: 6,
+  //   where: { comingSoon: false },
+  //   orderBy: { createdAt: "desc" },
+  //   include: {
+  //     variants: true, 
+  //   },
+  // });
 
-  const trendingProducts: Product[] = await prisma.product.findMany({
-    take: 6,
-    where: { comingSoon: false },
-    orderBy: {
-      OrderItem: {
-        _count: "desc",
-      },
-    },
-    include: {
-      variants: true, // Include the ProductVariant relation
-    },
-  });
+  // const trendingProducts: Product[] = await prisma.product.findMany({
+  //   take: 6,
+  //   where: { comingSoon: false },
+  //   orderBy: {
+  //     OrderItem: {
+  //       _count: "desc",
+  //     },
+  //   },
+  //   include: {
+  //     variants: true,
+  //   },
+  // });
 
-  const soonProducts: Product[] = await prisma.product.findMany({
-    take: 6,
-    where: { comingSoon: true },
-    orderBy: { createdAt: "desc" },
-    include: {
-      variants: true, // Include the ProductVariant relation
-    },
-  });
+  // const soonProducts: Product[] = await prisma.product.findMany({
+  //   take: 6,
+  //   where: { comingSoon: true },
+  //   orderBy: { createdAt: "desc" },
+  //   include: {
+  //     variants: true,
+  //   },
+  // });
 
-  // Helper to render product grids
-  const renderProductGrid = (products: Product[], keyPrefix: string) => (
-    <div className="my-4 grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6">
-      {products.length > 0 ? (
-        products.map((product) => (
-          <ProductCard product={product} key={keyPrefix + product.id} />
-        ))
-      ) : (
-        <p>No products available.</p>
-      )}
-    </div>
-  );
+  
+  // const renderProductGrid = (products: Product[], keyPrefix: string) => (
+  //   <div className="my-4 grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6">
+  //     {products.length > 0 ? (
+  //       products.map((product) => (
+  //         <ProductCard product={product} key={keyPrefix + product.id} />
+  //       ))
+  //     ) : (
+  //       <p>No products available.</p>
+  //     )}
+  //   </div>
+  // );
 
   return (
     <>
