@@ -18,7 +18,7 @@ export default function Hero() {
       <Container maxWidth="lg" className="flex justify-between rounded-md p-4">
         <div className="flex flex-col justify-around w-full rounded-md max-w-xl items-center pr-4">
           {/* <img src="/images/logoTree.png" alt="" /> */}
-          <Image src="/images/logoTree.png" alt="" height={500} width={500} />
+          <Image src="/images/logoTree2.png" alt="" height={500} width={500} />
 
           <Link href="/products">
             <Button className="p-4 rounded-full font-bold bg-emerald-600 hover:bg-emerald-800">
