@@ -13,9 +13,9 @@ export default function Hero() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1.5, ease: "easeOut" }}
-      className="h-screen flex items-center justify-center mt-[-30px]"
+      className="h-screen flex items-center justify-center mt-[-35px]"
     >
-      <Container maxWidth="lg" className="flex justify-between rounded-md p-4">
+      <Container maxWidth="lg" className="flex justify-center rounded-md p-4">
         <div className="flex flex-col justify-around w-full rounded-md max-w-xl items-center pr-4">
           {/* <img src="/images/logoTree.png" alt="" /> */}
           <Image src="/images/logoTree2.png" alt="" height={500} width={500} />
@@ -26,7 +26,7 @@ export default function Hero() {
             </Button>
           </Link>
         </div>
-        <BabyCarousel />
+        {/* <BabyCarousel /> */}
       </Container>
     </motion.div>
   );

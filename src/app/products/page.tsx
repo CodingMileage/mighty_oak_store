@@ -4,6 +4,10 @@ import ClientProductPagev2 from "./ClientProductPagev2";
 import { Container } from "@mui/material";
 import { BundleSparkle, SparklesTextDemo } from "@/components/Nyxb/Sparkle";
 import ProductCard from "@/components/ProductCard";
+import Link from "next/link";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { BabyCarousel } from "@/components/BabySlider";
 
 type ProductVariant = {
   id: string;
@@ -90,6 +94,25 @@ export default async function ProductPage() {
     //   <SparklesTextDemo />
     //   {renderProductGrid(products, "product-")}
     // </Container>
-    <ClientProductPagev2 products={products} />
+    <>
+      <div className="flex justify-center rounded-md p-4">
+        {" "}
+        <div className="flex justify-around w-full rounded-md max-w-xl items-center pr-4">
+          {/* <img src="/images/logoTree.png" alt="" /> */}
+          <Image
+            src="/images/MOSTag.jpeg"
+            alt=""
+            height={512}
+            width={512}
+            className="rounded"
+          />
+          {/* <img src="/images/MOSTag.jpeg" /> */}
+
+          <Link href="/products"></Link>
+        </div>
+        <BabyCarousel />
+      </div>
+      <ClientProductPagev2 products={products} />
+    </>
   );
 }
