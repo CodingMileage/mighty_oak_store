@@ -1,3 +1,15 @@
+![Example](public/logo.png)
+![Example](public/hero.png)
+![Example](public/collection.png)
+![Example](public/product.png)
+
+<p align="center">
+  <img src="public/logo.png" alt="Logo" width="220">
+  <img src="public/hero.png" alt="Hero" width="220">
+  <img src="public/collection.png" alt="Collection" width="220">
+  <img src="public/product.png" alt="Product" width="220">
+</p>
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
